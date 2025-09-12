@@ -82,7 +82,6 @@ function EasyAppearance.SetAppearance( ply )
         
         if modelToUse == "models/player/kleiner.mdl" then 
             print("Model being utilised is invalid. Most likely set to another model we don't have on the server!")
-            return 
         end
 
         ply:SetSubMaterial()

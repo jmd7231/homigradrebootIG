@@ -938,14 +938,15 @@ hook.Add("Player Think","FakeControl",function(ply,time) --управление 
 							ply:ChatPrint("Ropes Left: "..RopeCount - 1)
 						end
 						if (rag.IsWeld or 0) > 0 then
-							ply:ChatPrint("You have been restrained. You can press Space + G to try to break free")
+							--ply:ChatPrint("")
+							ply:ConCommand("hg_subtitle 'You have been restrained. You can press Space + G to try to break free.', black")
 							ply.Bloodlosing = ply.Bloodlosing + 10
 							ply.pain = ply.pain + 20
 						elseif (not rag.IsWeld or 0) == 0 then
-							ply:ChatPrint("You have broken free.")
+							ply:ConCommand("hg_subtitle 'You have broken free.', black")
 						end
 					else
-						ply:ChatPrint("You have broken free.")
+						ply:ConCommand("hg_subtitle 'You have broken free.', black")
 					end
 					Ropes[1].Constraint:Remove()
 					rag:EmitSound("snd_jack_hmcd_ducttape.wav",90,50,0.5,CHAN_AUTO)

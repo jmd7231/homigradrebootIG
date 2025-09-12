@@ -187,7 +187,7 @@ if SERVER then
             ent:EmitSound("buttons/button24.wav",60,50)
             self:SetNWBool("hasbomb",true)
         else
-            self:GetOwner():ChatPrint("You cannot deploy the bomb for another "..math.floor(timePassed).." seconds!")
+            ply:ConCommand("hg_subtitle 'You cannot deploy the bomb for another'..math.floor(timePassed)..' seconds!'', red")
         end
     end
 

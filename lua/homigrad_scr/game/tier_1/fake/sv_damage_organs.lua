@@ -18,7 +18,7 @@ hook.Add("HomigradDamage","Organs",function(ply,hitgroup,dmginfo,rag,armorMul,ar
             dmginfo:GetDamage() >= 6 and
             ent:GetVelocity():Length() > 500
         then
-            ply:ChatPrint("You feel your neck snap.")
+            --ply:ConCommand("hg_subtitle 'My neck snaps', red")
             ent:EmitSound("NPC_Barnacle.BreakNeck",511,200,1,CHAN_ITEM)
             dmginfo:ScaleDamage(5000 * 5)
 
@@ -38,7 +38,8 @@ hook.Add("HomigradDamage","Organs",function(ply,hitgroup,dmginfo,rag,armorMul,ar
             ply.LeftArm = math.min(0.6,ply.LeftArm - sub)
             if ply.msgLeftArm < CurTime() then
                 ply.msgLeftArm = CurTime() + 1
-                ply:ChatPrint("Your left arm is now broken.")
+                --ply:ChatPrint("Your left arm is now broken.")
+                ply:ConCommand("hg_subtitle 'My left arm is now broken', red")
                 ent:EmitSound("NPC_Barnacle.BreakNeck",70,65,0.4,CHAN_ITEM)
             end
         end
@@ -47,7 +48,7 @@ hook.Add("HomigradDamage","Organs",function(ply,hitgroup,dmginfo,rag,armorMul,ar
             ply.RightArm = math.max(0.6,ply.RightArm - sub)
             if ply.msgRightArm < CurTime() then
                 ply.msgRightArm = CurTime() + 1
-                ply:ChatPrint("Your right arm is now broken.")
+                ply:ConCommand("hg_subtitle 'My right arm is now broken', red")
                 ent:EmitSound("NPC_Barnacle.BreakNeck",70,65,0.4,CHAN_ITEM)
             end
         end
@@ -56,7 +57,7 @@ hook.Add("HomigradDamage","Organs",function(ply,hitgroup,dmginfo,rag,armorMul,ar
             ply.LeftLeg = math.max(0.6,ply.LeftLeg - sub)
             if ply.msgLeftLeg < CurTime() then
                 ply.msgLeftLeg = CurTime() + 1
-                ply:ChatPrint("Your left leg is now broken.")
+                ply:ConCommand("hg_subtitle 'My left leg is now broken', red")
                 ent:EmitSound("NPC_Barnacle.BreakNeck",70,65,0.4,CHAN_ITEM)
             end
         end
@@ -65,7 +66,7 @@ hook.Add("HomigradDamage","Organs",function(ply,hitgroup,dmginfo,rag,armorMul,ar
             ply.RightLeg = math.max(0.6,ply.RightLeg - sub)
             if ply.msgRightLeg < CurTime() then
                 ply.msgRightLeg = CurTime() + 1
-                ply:ChatPrint("Your right leg is now broken.")
+                ply:ConCommand("hg_subtitle 'My right leg is now broken', red")
                 ent:EmitSound("NPC_Barnacle.BreakNeck",70,65,0.4,CHAN_ITEM)
             end
         end
@@ -143,7 +144,8 @@ hook.Add("HomigradDamage","Organs",function(ply,hitgroup,dmginfo,rag,armorMul,ar
                     ply.brokenspine=true
                     
                     if ply:IsPlayer() then
-                        ply:ChatPrint("You feel your spine shatter.\nYou can no longer walk.")
+                        --ply:ChatPrint("You feel your spine shatter.\nYou can no longer walk.")
+                        RunConsoleCommand("hg_subtitle 'i feel my spine shatter', black")
                     end
 
                     ent:EmitSound("NPC_Barnacle.BreakNeck",70,125,0.7,CHAN_ITEM)

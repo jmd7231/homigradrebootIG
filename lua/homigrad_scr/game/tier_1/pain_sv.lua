@@ -42,7 +42,7 @@ if engine.ActiveGamemode() == "homigrad" then
             end
 
             // Compared to above, this probably won't be as effective, but whatever.
-            if ply.pain > 250 + ply:GetNWInt("SharpenAMT") * 5 and not ply.unconscious then
+            if ply.pain > 500 + ply:GetNWInt("SharpenAMT") * 5 and not ply.unconscious then
                 ply:SetNWBool("fake",IsValid(ply.FakeRagdoll))
             end
         end

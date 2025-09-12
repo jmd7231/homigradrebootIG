@@ -126,9 +126,8 @@ hook.Add("PlayerButtonDown", "CheckKeyPress", function(ply, button)
         net.Send(ply)
             
         timer.Simple(20, function()
-            if ply:GetModel() == "models/vedatys/orangutan.mdl" then -- without this, rage wouldve been ready after the round had ended
-                abilityTimer = false
-                ply:ChatPrint("Rage Is Ready For Use.")
+            if lply:GetModel() == "models/vedatys/orangutan.mdl" then -- fuck me
+                draw.DrawText( "Press R To Activate Rage", "HomigradRoundFont", ScrW() / 2, ScrH() / 1.2, red, TEXT_ALIGN_CENTER )
             end
         end)
     end

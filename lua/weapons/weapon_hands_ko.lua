@@ -309,7 +309,7 @@ function SWEP:ApplyForce()
 		end
 
 		if self.CarryEnt:GetClass() == "prop_ragdoll" then
-			mul = mul * 300
+			mul = mul * 3
 			local ply = RagdollOwner(self.CarryEnt)
 			if self:GetOwner():KeyPressed( IN_RELOAD ) then
 				if not ply then
@@ -319,14 +319,16 @@ function SWEP:ApplyForce()
 						self:GetOwner():ChatPrint("There is no pulse, but CPR can be performed to attempt to save them.")
 					else
 						local uncon = (ply.unconscious and " They are unconscious." or "")
-						self:GetOwner():ChatPrint(((ply.nextPulse < 0.9 and "This person is in great condition.") or 
-						(ply.nextPulse <= 1.5 and "This person seems to be a little roughed up.") or 
+						
+						self:GetOwner():ConCommand("hg_subtitle "..((ply.nextPulse < 0.9 and "This person is in great condition.") or 
+						(ply.nextPulse <= 1.5 and "This person seems to be a little roughed up.") or
 						(ply.nextPulse < 2 and "This person seems to be in a bad physical state.") or 
-						(ply.nextPulse >= 2 and "This person is barely holding onto their life."))..uncon)
+						(ply.nextPulse >= 2 and "This person is barely holding onto their life."))..uncon..", dark")
 					end
 				end
 			end
 		end
+
 		vec:Normalize()
 
 		if SERVER then

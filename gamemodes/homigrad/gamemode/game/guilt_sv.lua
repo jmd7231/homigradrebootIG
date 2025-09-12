@@ -123,7 +123,7 @@ end)
 hook.Add("Player Spawn","guiltasdd",function(ply)
 	ply.Guilt = ply.Guilt or 0
 	if not validUserGroup[ply:GetUserGroup()] then
-		ply:ChatPrint("Your guilt is currently at " .. tostring(math.Round(ply.Guilt,0)) .. "% out of 100%")
+		--ply:ChatPrint("Your guilt is currently at " .. tostring(math.Round(ply.Guilt,0)) .. "% out of 100%")
 	end
 	ply.RoundGuilt = 0
 end)

@@ -160,7 +160,7 @@ net.Receive("ply_take_item",function(len,ply)
 			ply:GiveAmmo(weapon:Clip1(),weapon:GetPrimaryAmmoType())
 			weapon:SetClip1(0)
 		else
-			ply:ChatPrint("You already have this weapon.")
+			self:GetOwner():ConCommand("hg_subtitle 'You already have this weapon.', dark")
 		end
 	else
 		if lootEnt:IsPlayer() and (lootEnt.ActiveWeapon == weapon and not lootEnt.unconscious) then return end

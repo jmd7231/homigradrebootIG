@@ -54,7 +54,7 @@ else
     --local admin_menu = CreateClientConVar("hg_admin_menu","1",true,false,"enable admin menu",0,1)
     local function CanUseSpawnMenu()
         local ply = LocalPlayer()
-        if validUserGroup[ply:GetUserGroup()] and ply:Team() ~= TEAM_SPECTATOR or GetConVar("sv_construct"):GetBool() then return true else return false end
+        --if validUserGroup[ply:GetUserGroup()] and ply:Team() ~= TEAM_SPECTATOR or GetConVar("sv_construct"):GetBool() then return true else return false end
 
         local func = TableRound().CanUseSpawnMenu
         func = func and func(LocalPlayer())
