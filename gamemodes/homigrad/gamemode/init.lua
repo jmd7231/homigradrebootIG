@@ -109,6 +109,10 @@ function GM:PlayerSpawn(ply)
 	
 end
 
+	if ply:GetModel() == "models/player.mdl" then
+		ply:SetModel("models/player/group01/male_07.mdl")
+	end
+
 function GM:PlayerDeath(ply,inf,att)
 	if not roundActive then return end
 

@@ -115,9 +115,9 @@ if CLIENT then
     local scope = Material("pwb/sprites/scope")
     local sight_alpha = 0
 
-    SWEP.spos = Vector(-15, 0, 1)
+    SWEP.spos = Vector(-15, 20, 1)
     SWEP.sang = Angle(0, 0, 0)
-    SWEP.zoomfov = 7
+    SWEP.zoomfov = 12
 
     function SWEP:DrawHUDAdd()
         local ply = self:GetOwner()
