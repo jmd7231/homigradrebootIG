@@ -9,7 +9,12 @@ if engine.ActiveGamemode() == "homigrad" then
     if CLIENT then
         local missing_fixes = {
             ["models/props_junk/physics_trash"] = "models/debug/debugwhite",
-            ["models/props_junk/physics_trash_hospital"] = "models/debug/debugwhite"
+            ["models/props_junk/physics_trash_hospital"] = "models/debug/debugwhite",
+            ["models/props_junk/cardboardboxes01"] = "models/debug/debugwhite",
+            ["models/props_junk/cardboardboxes02"] = "models/debug/debugwhite",
+            ["models/props_junk/cardboardboxes04"] = "models/debug/debugwhite",
+            ["models/props_junk/metalcontainers01"] = "models/debug/debugwhite",
+            ["models/props_junk/metalcontainers02"] = "models/debug/debugwhite"
         }
 
         -- Force-load replacement materials so Source doesn't precache spam
