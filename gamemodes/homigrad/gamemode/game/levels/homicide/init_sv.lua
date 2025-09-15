@@ -47,11 +47,10 @@ local function makeT(ply)
         local wep = ply:Give("weapon_hk_usps")
         wep:SetClip1(wep:GetMaxClip1())
         ply:Give("weapon_kabar")
-        ply:Give("weapon_hg_t_vxpoison")
         ply:Give("weapon_hidebomb")
         ply:Give("weapon_hg_rgd5")
         ply:Give("weapon_radar")
-        ply:GiveAmmo(wep:GetMaxClip1(),wep:GetPrimaryAmmoType())
+        ply:GiveAmmo(wep:GetMaxClip1() * 3,wep:GetPrimaryAmmoType())
     elseif homicide.roundType == 3 then
         local wep = ply:Give("weapon_hg_crossbow")
         ply:GiveAmmo(8, "XBowBolt", true) -- slots = bolts.
@@ -59,8 +58,8 @@ local function makeT(ply)
         ply:Give("weapon_kabar")
         ply:Give("weapon_hg_rgd5")
         ply:Give("weapon_hidebomb")
-        ply:Give("weapon_hg_t_vxpoison")
         ply:Give("weapon_radar")
+        ply:GiveAmmo(wep:GetMaxClip1(),wep:GetPrimaryAmmoType())
     elseif homicide.roundType == 5 then
         local wep
         if math.random(1,2) == 1 then wep = ply:Give("weapon_scout") else wep = ply:Give("weapon_barret") end
@@ -69,19 +68,17 @@ local function makeT(ply)
         ply:Give("weapon_kabar")
         ply:Give("weapon_hg_rgd5")
         ply:Give("weapon_hidebomb")
-        ply:Give("weapon_hg_t_vxpoison")
         ply:Give("weapon_radar")
-        print(player.GetCount())
+        ply:GiveAmmo(wep:GetMaxClip1(),wep:GetPrimaryAmmoType())
     else
         local wep = ply:Give("weapon_mateba")
         ply:GiveAmmo(3*8, ".44 Remington Magnum", true) -- slots = bullets.
         wep:SetClip1(wep:GetMaxClip1())
         ply:Give("weapon_kabar")
-        ply:Give("weapon_hg_t_vxpoison")
         ply:Give("weapon_hidebomb")
         ply:Give("weapon_hg_rgd5")
         ply:Give("weapon_radar")
-        ply:GiveAmmo(12,5)
+        ply:GiveAmmo(wep:GetMaxClip1(),wep:GetPrimaryAmmoType())
     end
 
     timer.Simple(5,function() ply.allowFlashlights = true end)
@@ -269,6 +266,41 @@ function homicide.StartRoundSV()
     homicide.prepEndTime = CurTime() + homicide.PREP_TIME
 
     local aviable = homicide.Spawns()
+
+
+        -- === Helper: send a client console command to everyone (simple way) ===
+    local function SubtitleAll_ConCmd(text, theme)
+        for _, ply in ipairs(player.GetAll()) do
+            if IsValid(ply) then
+                ply:ConCommand(string.format([[hg_subtitle "%s", %s]], text, theme or "dark"))
+            end
+        end
+    end
+
+    -- === Schedule 20s/10s/5s warnings during prep ===
+    do
+        local PREP = homicide.PREP_TIME or 20
+        local schedule = {
+            PREP - 20,  -- at t=0s:  20s before start
+            PREP - 10,  -- at t=10s: 10s before start
+            PREP - 5    -- at t=15s: 5s before start
+        }
+        for _, offsetFromStart in ipairs(schedule) do
+            if offsetFromStart >= 0 then
+                timer.Simple(offsetFromStart, function()
+                    -- still in Homicide prep?
+                    if roundActiveName == "homicide" and homicide.inPrep then
+                        local secsLeft = math.max(0, math.ceil(homicide.prepEndTime - CurTime()))
+                        -- If you want the *exact* string you wrote:
+                        -- SubtitleAll_ConCmd("The game will start at 20 seconds.", "red")
+                        -- Or: dynamic message that matches the remaining time:
+                        SubtitleAll_ConCmd(("The game will start in %d seconds."):format(secsLeft), "dark")
+                    end
+                end)
+            end
+        end
+    end
+
 
     -- We'll honor forced picks AFTER prep
     local pendingForceT  = {}

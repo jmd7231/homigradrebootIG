@@ -4,6 +4,9 @@ resource.AddFile("resource/localization/en/homigradlocales.properties")
 --resource.AddFile("resource/localization/es-ES/homigrad.lang")
 --resource.AddFile("resource/localization/en-PT/homigrad.lang")
 --resource.AddFile("resource/localization/sv-SE/homigrad.lang")
+resource.AddFile("materials/vgui/fmt/homicide.png")
+
+
 
 util.AddNetworkString( "SIX.SIDETO" )
 SIX = SIX or {}

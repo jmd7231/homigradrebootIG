@@ -17,19 +17,20 @@ SWEP.Primary.Damage = 255
 SWEP.Primary.Sound = "snd_jack_hmcd_snp_close.wav"
 SWEP.Primary.SoundFar = "snd_jack_hmcd_snp_far.wav"
 SWEP.Primary.Force = 600
+SWEP.Primary.Delay = 1
 
 SWEP.ViewModel				= "models/weapons/w_jmod_m107.mdl"
 SWEP.WorldModel				= "models/weapons/w_jmod_m107.mdl"
 
 function SWEP:ApplyEyeSpray()
-    self.eyeSpray = self.eyeSpray - Angle(4,math.Rand(-2,2),0)
+    self.eyeSpray = self.eyeSpray - Angle(math.random(20,-20)/ 40, math.random(20,-20) / 40,0)
 end
 
 if CLIENT then
     SWEP.opticpos = Vector(0.2, 4, 10)
     SWEP.opticang = Angle(0, -90, 0)
 
-    SWEP.spos = Vector(-25, 4, 3)
+    SWEP.spos = Vector(-25, 0, 3)
     SWEP.sang = Angle(0, 0, 0)
 
     SWEP.zoomfov = 9

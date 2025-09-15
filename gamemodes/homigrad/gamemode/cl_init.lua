@@ -333,7 +333,7 @@ end
 local HGSub = {
     FADE_IN     = 0.15,   -- seconds (quick)
     HOLD        = 3.25,   -- seconds
-    FADE_OUT    = 1.20,   -- seconds (slower)
+    FADE_OUT    = 0.80,   -- seconds (slower)
     BOTTOM_GAP  = 180,    -- px from bottom of screen
     PAD_X       = 24,     -- box horizontal padding
     PAD_Y       = 14,     -- box vertical padding
@@ -357,6 +357,11 @@ HGSub.themes = {
     -- Red look: text is nearly the same as bg (very low contrast by design)
     red = {
         bg        = Color(160, 20,  20,  230),
+        text      = Color(255, 255,  255,  255), -- ~matches bg
+        fontFace  = "Trebuchet MS"
+    },
+    warning = {
+        bg        = Color(255, 103,  0,  120),
         text      = Color(255, 255,  255,  255), -- ~matches bg
         fontFace  = "Trebuchet MS"
     }

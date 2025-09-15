@@ -1,129 +1,195 @@
--- UI Round Start Handler
--- Place this in a shared location accessible by all gamemodes
+-- UI Round Start Handler (Vignette + Centered Logo/Text)
+-- Drop-in replacement for your previous panel-based handler.
+
+if SERVER then return end
+
 RoundStartUI = RoundStartUI or {}
 
-local fadeStartTime = 0
-local fadeOutTime = 0
-local displayDuration = 5
-local currentConfig = nil
+-- ------- Configurable timings -------
+RoundStartUI.fadeIn   = 0.35    -- seconds for vignette fade in
+RoundStartUI.hold     = 4.30    -- visible time at full opacity (tweak freely)
+RoundStartUI.fadeOut  = 0.35    -- seconds for vignette fade out
+RoundStartUI.maxAlpha = 220     -- vignette darkness (0-255). 180-220 looks good.
 
--- Role colors
-RoundStartUI.Colors = {
-    traitor = Color(200, 0, 10, 255),
+-- ------- State -------
+local startTime     = 0
+local endTime       = 0
+local currentConfig = nil
+local headerMat     = nil
+local headerTexW, headerTexH = 0, 0
+
+-- Gradients for the vignette
+local gradUp    = Material("vgui/gradient-u")
+local gradDown  = Material("vgui/gradient-d")
+local gradLeft  = Material("vgui/gradient-l")
+local gradRight = Material("vgui/gradient-r")
+
+-- Role colors (same idea as before)
+RoundStartUI.Colors = RoundStartUI.Colors or {
+    traitor  = Color(200,   0,  10, 255),
     innocent = Color(255, 255, 255, 255),
-    police = Color(75, 75, 255, 255),
-    ct = Color(75, 75, 255, 255),
-    default = Color(122, 122, 122, 255)
+    police   = Color( 75,  75, 255, 255),
+    ct       = Color( 75,  75, 255, 255),
+    default  = Color(122, 122, 122, 255)
 }
 
--- Initialize the round start UI
-function RoundStartUI.Show(config)
-    --[[
-    config = {
-        gamemode = "Homicide",
-        roundType = "Regular Round",
-        role = "Traitor",
-        roleColor = Color(200, 0, 10),
-        description = "You have a silenced USP with two magazines.",
-        duration = 5, -- optional, defaults to 5
-        sound = "snd_jack_hmcd_shining.mp3" -- optional
-    }
-    ]]
-    
-    currentConfig = config
-    fadeStartTime = CurTime()
-    fadeOutTime = CurTime() + (config.duration or displayDuration)
-    
-    if config.sound then
-        surface.PlaySound(config.sound)
+-- Helper: pick role color by name
+function RoundStartUI.GetRoleColor(roleName)
+    local role = string.lower(roleName or "")
+    if string.find(role, "traitor") then return RoundStartUI.Colors.traitor end
+    if string.find(role, "innocent") then return RoundStartUI.Colors.innocent end
+    if string.find(role, "police") or string.find(role, "ct") or string.find(role, "swat") then
+        return RoundStartUI.Colors.police
     end
-    
-    if config.fadeScreen then
-        LocalPlayer():ScreenFade(SCREENFADE.IN, Color(0, 0, 0, 220), 0.5, 4)
+    return RoundStartUI.Colors.default
+end
+
+-- Load a header image material (PNG recommended under materials/vgui/…)
+local function loadHeaderMat(path)
+    headerMat, headerTexW, headerTexH = nil, 0, 0
+    if not path or path == "" then return end
+
+    -- Tip: use PNG in materials/vgui/... and reference with "vgui/..." including extension.
+    local mat = Material(path, "smooth mips")
+    if not mat or mat:IsError() then return end
+
+    -- Try to read texture size for aspect-correct scaling
+    local tex = mat:GetTexture("$basetexture")
+    if tex then
+        headerTexW = tex:GetMappingWidth()  or 0
+        headerTexH = tex:GetMappingHeight() or 0
+    end
+    headerMat = mat
+end
+
+-- Public API: show the intro
+-- config = {
+--   gamemode = "Homicide",
+--   roundType = "Regular Round",
+--   role = "Traitor",
+--   roleColor = Color(...),           -- optional; falls back to GetRoleColor(role)
+--   description = "Your intro text",  -- optional
+--   duration = 5,                     -- optional; overrides hold time if set
+--   sound = "path/to/sound.mp3",      -- optional
+--   headerImage = "vgui/fmt/logo.png" -- optional PNG under materials/vgui/...
+-- }
+function RoundStartUI.Show(config)
+    currentConfig = config or {}
+
+    -- Timing
+    startTime = CurTime()
+    local hold = currentConfig.duration or RoundStartUI.hold
+    endTime   = startTime + RoundStartUI.fadeIn + hold + RoundStartUI.fadeOut
+
+    -- Audio
+    if currentConfig.sound then
+        surface.PlaySound(currentConfig.sound)
+    end
+
+    -- Optional ScreenFade if you were using it, but vignette handles visuals now.
+    if currentConfig.fadeScreen then
+        LocalPlayer():ScreenFade(SCREENFADE.IN, Color(0, 0, 0, 0), 0, 0) -- no-op
     end
 end
 
--- Hide the UI
 function RoundStartUI.Hide()
     currentConfig = nil
-    fadeStartTime = 0
-    fadeOutTime = 0
+    startTime = 0
+    endTime   = 0
 end
 
--- Check if UI should be visible
 function RoundStartUI.IsVisible()
-    return currentConfig and CurTime() < fadeOutTime
+    return currentConfig ~= nil and CurTime() < endTime
 end
 
--- Draw the UI panels
+-- Smoothstep for pleasant easing
+local function smooth01(t) return t * t * (3 - 2 * t) end
+
+-- Draw vignette (four edges using gradients)
+local function drawVignette(alpha)
+    local w, h = ScrW(), ScrH()
+    local edge = math.floor(math.min(w, h) * 0.22) -- thickness of vignette
+
+    surface.SetDrawColor(0, 0, 0, alpha)
+
+    -- Top / Bottom
+    surface.SetMaterial(gradUp)
+    surface.DrawTexturedRect(0, 0, w, edge)
+
+    surface.SetMaterial(gradDown)
+    surface.DrawTexturedRect(0, h - edge, w, edge)
+
+    -- Left / Right
+    surface.SetMaterial(gradLeft)
+    surface.DrawTexturedRect(0, 0, edge, h)
+
+    surface.SetMaterial(gradRight)
+    surface.DrawTexturedRect(w - edge, 0, edge, h)
+end
+
+-- Centered text helper (with outline for readability)
+local function centeredText(text, font, y, color, outline)
+    local w = ScrW()
+    draw.SimpleTextOutlined(text, font, w * 0.5, y, color, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, outline or 2, Color(0,0,0, color.a))
+end
+
+-- Main draw
 function RoundStartUI.Draw()
-    if not RoundStartUI.IsVisible() then return end
-    if not currentConfig then return end
-    
-    local alpha = 255
-    local timeLeft = fadeOutTime - CurTime()
-    
-    -- Fade out in the last second
-    if timeLeft < 1 then
-        alpha = math.Clamp(timeLeft * 255, 0, 255)
+    if not RoundStartUI.IsVisible() or not currentConfig then return end
+
+    local now     = CurTime()
+    local elapsed = now - startTime
+    local total   = endTime - startTime
+
+    -- Calculate current alpha phase (0->1 fade in, 1 hold, 1->0 fade out)
+    local a
+    if elapsed < RoundStartUI.fadeIn then
+        a = smooth01(math.Clamp(elapsed / RoundStartUI.fadeIn, 0, 1))
+    elseif now > endTime - RoundStartUI.fadeOut then
+        local t = math.Clamp((endTime - now) / RoundStartUI.fadeOut, 0, 1)
+        a = smooth01(t)
+    else
+        a = 1
     end
-    
-    local scrW, scrH = ScrW(), ScrH()
-    local panelWidth = scrW * 0.6
-    local panelHeight = scrH * 0.08
-    local panelSpacing = scrH * 0.02
-    local topMargin = scrH * 0.1
-    
-    -- Top panel background
-    local topPanelY = topMargin
-    draw.RoundedBox(16, (scrW - panelWidth) / 2, topPanelY, panelWidth, panelHeight, Color(30, 30, 30, alpha * 0.9))
-    draw.RoundedBox(14, (scrW - panelWidth) / 2 + 2, topPanelY + 2, panelWidth - 4, panelHeight - 4, Color(45, 45, 45, alpha * 0.8))
-    
-    -- Bottom panel background
-    local bottomPanelY = topMargin + panelHeight + panelSpacing
-    draw.RoundedBox(16, (scrW - panelWidth) / 2, bottomPanelY, panelWidth, panelHeight, Color(30, 30, 30, alpha * 0.9))
-    draw.RoundedBox(14, (scrW - panelWidth) / 2 + 2, bottomPanelY + 2, panelWidth - 4, panelHeight - 4, Color(45, 45, 45, alpha * 0.8))
-    
-    -- Role color accent (thin line at top of panels)
-    local accentColor = Color(currentConfig.roleColor.r, currentConfig.roleColor.g, currentConfig.roleColor.b, alpha)
-    surface.SetDrawColor(accentColor)
-    surface.DrawRect((scrW - panelWidth) / 2 + 10, topPanelY + 5, panelWidth - 20, 3)
-    surface.DrawRect((scrW - panelWidth) / 2 + 10, bottomPanelY + 5, panelWidth - 20, 3)
-    
-    -- Top panel text
-    local titleColor = Color(255, 255, 255, alpha)
-    local roleColor = Color(currentConfig.roleColor.r, currentConfig.roleColor.g, currentConfig.roleColor.b, alpha)
-    
-    -- Gamemode title (left side)
-    draw.SimpleText(currentConfig.gamemode, "HomigradRoundFont", scrW / 2 - panelWidth / 4, topPanelY + panelHeight / 2, titleColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-    
-    -- Round type (center)
-    if currentConfig.roundType then
-        draw.SimpleText(currentConfig.roundType, "HomigradFontBig", scrW / 2, topPanelY + panelHeight / 2, titleColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+
+    local vignetteAlpha = math.Clamp(math.floor(RoundStartUI.maxAlpha * a), 0, 255)
+
+    -- Draw vignette
+    drawVignette(vignetteAlpha)
+
+    -- Derive colors
+    local baseAlpha = math.Clamp(math.floor(255 * a), 0, 255)
+    local titleCol  = Color(255, 255, 255, baseAlpha)
+    local roleCol   = currentConfig.roleColor or RoundStartUI.GetRoleColor(currentConfig.role or "")
+    roleCol = Color(roleCol.r, roleCol.g, roleCol.b, baseAlpha) -- apply alpha
+
+    -- Layout
+    local sw, sh  = ScrW(), ScrH()
+    local y       = sh * 0.44   -- center-ish anchor
+    local gap     = sh * 0.045  -- vertical spacing
+
+    -- Text fallback if no image
+    centeredText(tostring(currentConfig.gamemode or ""), "HomigradFontBig", y - gap, titleCol)
+
+    -- Round type (neutral)
+    if currentConfig.roundType and currentConfig.roundType ~= "" then
+        centeredText("Round Type: "..tostring(currentConfig.roundType), "HomigradFontBig", y + gap * 0.2, titleCol)
+        y = y + gap
     end
-    
-    -- Role (right side)
-    draw.SimpleText("You are: " .. currentConfig.role, "HomigradRoundFont", scrW / 2 + panelWidth / 4, topPanelY + panelHeight / 2, roleColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-    
-    -- Bottom panel text (description)
-    draw.SimpleText(currentConfig.description, "HomigradFontBig", scrW / 2, bottomPanelY + panelHeight / 2, Color(255, 255, 255, alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+
+    -- Role line (color-coded)
+    if currentConfig.role and currentConfig.role ~= "" then
+        centeredText("Your Role: " .. tostring(currentConfig.role), "HomigradRoundFont", y + gap * 0.2, roleCol)
+        y = y + gap
+    end
+
+    -- Description (neutral)
+    if currentConfig.description and currentConfig.description ~= "" then
+        centeredText(tostring(currentConfig.description), "HomigradFontBig", y + gap * 0.2, titleCol)
+    end
 end
 
--- Hook into HUDPaint
 hook.Add("HUDPaint", "RoundStartUI_Draw", function()
     RoundStartUI.Draw()
 end)
-
--- Helper function to get color by role name
-function RoundStartUI.GetRoleColor(roleName)
-    roleName = string.lower(roleName)
-    if string.find(roleName, "traitor") then
-        return RoundStartUI.Colors.traitor
-    elseif string.find(roleName, "innocent") then
-        return RoundStartUI.Colors.innocent
-    elseif string.find(roleName, "police") or string.find(roleName, "ct") or string.find(roleName, "swat") then
-        return RoundStartUI.Colors.police
-    else
-        return RoundStartUI.Colors.default
-    end
-end
+    

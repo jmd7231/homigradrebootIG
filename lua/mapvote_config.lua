@@ -1,6 +1,6 @@
 -- Time in seconds until the mapvote is over from
 -- when it starts.
-SolidMapVote[ 'Config' ][ 'Length' ] = 25
+SolidMapVote[ 'Config' ][ 'Length' ] = 8
 
 -- The time in seconds that the vote will stay on the screen
 -- after the winning map has been chosen.

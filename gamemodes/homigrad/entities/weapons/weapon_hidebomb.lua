@@ -152,7 +152,7 @@ if SERVER then
     --local cyka = {}
 
     function SWEP:PrimaryAttack()
-        local timePassed = roundTime - (roundTime - 22) + roundTimeStart - CurTime()
+        local timePassed = roundTime - (roundTime - 35) + roundTimeStart - CurTime()
         
         if timePassed < 0 then   
             local owner = self:GetOwner()

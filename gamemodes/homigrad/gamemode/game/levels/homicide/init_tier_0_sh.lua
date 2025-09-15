@@ -117,26 +117,18 @@ function homicide.Scoreboard_Status(ply)
 end
 
 -- Round type and sound configurations
-local roundTypes = {"Shotgun", "Regular Round", "No Fire-Arms", "Wild West","Hitman"}
-local roundSound = {"snd_jack_hmcd_disaster.mp3","snd_jack_hmcd_shining.mp3","snd_jack_hmcd_panic.mp3","snd_jack_hmcd_wildwest.mp3","snd_jack_hmcd_disaster.mp3"}
+local roundTypes = {"Standard"}
+local roundSound = {"snd_jack_hmcd_disaster.mp3"}
 
 local DescCT = {
-    [1] = "You have been given a shotgun. Be careful, the traitor will be likely to target you.",
-    [2] = "You have been given a M9 Beretta with one magazine.",
-    [3] = "You have been given a Taser & Baton to take care of the traitor.",
-    [4] = "You & the traitor have been given identical revolvers.",
-    [5] = "You have been given a shotgun. Be careful, the traitor will be likely to target you."
+    [1] = "You are armed with equipment to find the traitors.",
 }
 
 local DescTraitor = {
-    [1] = "You have a silenced USP with two magazines.",
-    [2] = "You have a silenced USP with two magazines.",
-    [3] = "You have a Crossbow. It is hidden from your character.",
-    [4] = "You have been given a revolver to take everyone else out.",
-    [5] = "You have a sniper rifle. It is hidden from your character."
+    [1] = "Leave no man standing other than your own.",
 }
 
-local DescInnocent = "Find the Traitor(s), and kill them to win!"
+local DescInnocent = "Work together to find the traitors among you."
 
 -- Initialize round UI display flag
 local roundUIShown = false
@@ -146,41 +138,41 @@ function homicide.HUDPaint_RoundLeft(white2)
     local lply = LocalPlayer()
     local name,color = homicide.GetTeamName(lply)
     
-    local startRound = (roundTimeStart + (homicide.PREP_TIME or 20)) - CurTime()
-    
-    -- Show round start UI
-    if startRound > 0 and lply:Alive() then
-        if playsound and not roundUIShown then
+    -- Count down the *prep* window instead of a fixed 5s intro
+    local prepLeft = (roundTimeStart + (homicide.PREP_TIME or 20)) - CurTime()
+
+    -- While we're still in prep, *do not* show the role intro UI.
+    -- Also reset the "shown once" flag so a new round can display the UI later.
+    if prepLeft > 0 then
+        roundUIShown = false
+    else
+        -- Prep is over: now (and only now) show the role intro once.
+        if playsound and not roundUIShown and lply:Alive() then
             playsound = false
             roundUIShown = true
-            
-            -- Determine description based on role
+
+            -- Determine description based on role, exactly like before
             local description = DescInnocent
             if lply.roleT then
                 description = DescTraitor[roundType] or "You have a silenced USP with two magazines."
             elseif lply.roleCT then
                 description = DescCT[roundType] or "..."
             end
-            
-            -- Show the new UI
+
             RoundStartUI.Show({
                 gamemode = "Homicide",
                 roundType = roundTypes[roundType],
                 role = name,
                 roleColor = color,
                 description = description,
-                duration = (homicide.PREP_TIME or 20),  
+                duration = 5,                -- keep your preferred duration
                 sound = roundSound[homicide.roundType],
-                fadeScreen = true
+                fadeScreen = true,
+                headerImage = "vgui/fmt/homicide.png"
             })
         end
-        return
-    else
-        -- Reset the flag when round UI is no longer needed
-        if startRound <= 0 then
-            roundUIShown = false
-        end
     end
+
     
     -- Buddy system display (unchanged)
     local lply_pos = lply:GetPos()
