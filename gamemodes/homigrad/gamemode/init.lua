@@ -88,8 +88,9 @@ function GM:PlayerSpawn(ply)
 	--print("Player usergroup: "..ply:GetUserGroup())
 
 	ply:PlayerClassEvent("On")
+	EasyAppearance.SetAppearance( ply )
 
-	print(ply:GetInfo("cl_playermodel"))
+	--print(ply:GetInfo("cl_playermodel"))
 
 
 	ply:Give("weapon_hands")
@@ -100,9 +101,6 @@ function GM:PlayerSpawn(ply)
 	
 
 	RunConsoleCommand("hg_usecustommodel","false")
-	ply:SetModel("models/player/group01/male_07.mdl")
-	RunConsoleCommand("cl_playermodel","none")
-	
 end
 
 

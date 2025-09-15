@@ -60,12 +60,12 @@ local namecolor = {
 -- avatar borders on the map vote.
 SolidMapVote[ 'Config' ][ 'Avatar Border Color' ] = function( ply )
 
-  if ply:IsUserGroup("servermanager") then
+  if ply:IsUserGroup("owner") or ply:IsUserGroup("servermanager") then
 	return HSVToColor( math.sin( 2*RealTime() )*128 + 127, 1, 1 )
   end
 
-  if ply:IsUserGroup("servertreuer") then
-	return namecolor.servertreuer
+  if ply:IsUserGroup("superadmin") then
+	return namecolor.admin
   end
     -- This is the default color
     return color_white
@@ -136,7 +136,7 @@ SolidMapVote[ 'Config' ][ 'Map Pool' ] = {
 
     -- Maps that need fixing
      --Requires Checks for info_player spawns to be removed
-    "gm_church",
+    --"gm_church",
     --"ttt_pizzeria", Buggy NPCs and Players
 
     "gm_building",
@@ -148,7 +148,6 @@ SolidMapVote[ 'Config' ][ 'Map Pool' ] = {
     "freeway_thicc_v3",
     --"gm_lilys_bedroom",
     --"ph_scotch",
-    "cs_office",
     "gm_paradise_resort"
 }
 
@@ -180,7 +179,7 @@ SolidMapVote[ 'Config' ][ 'Force Vote Commands' ] = {
 SolidMapVote[ 'Config' ][ 'RTV Percentage' ] = 0.6
 
 -- This is the time in seconds that must pass before players can begin to RTV
-SolidMapVote[ 'Config' ][ 'RTV Delay' ] = 60
+SolidMapVote[ 'Config' ][ 'RTV Delay' ] = 45
 
 -- If this is set to true, players will be able to remove their RTV
 -- by typing the RTV command again.
@@ -213,7 +212,7 @@ end
 
 -- Set this to true if you want the option to extend the map on the vote
 -- Set to false to disable
-SolidMapVote[ 'Config' ][ 'Enable Extend' ] = false
+SolidMapVote[ 'Config' ][ 'Enable Extend' ] = true
 SolidMapVote[ 'Config' ][ 'Extend Image' ] = 'http://i.imgur.com/zzBeMid.png'
 
 -- Set this to true if you want the option to choose a random map
@@ -281,7 +280,7 @@ SolidMapVote[ 'Config' ][ 'Specific Maps' ] = {
     { filename = "zs_adrift_v4", displayname = 'Adrift',image="https://i.imgur.com/D1UWlcz.jpeg", width = 1920, height = 1080 },
     { filename = "ttt_blackmesa_bahpu", displayname = 'Black Mesa',image="https://i.imgur.com/v0zYPia.jpeg", width = 1920, height = 1080 },
     { filename = "ttt_mc_island_2013", displayname = 'Minecraft Island',image="https://i.imgur.com/FBkaQTn.jpeg", width = 1920, height = 1080 },
-    // { filename = "cs_office-unlimited", displayname = 'Office',image="https://i.imgur.com/S2T3jQ8.jpeg", width = 1920, height = 1080 },
+    { filename = "cs_office-unlimited", displayname = 'Office',image="https://i.imgur.com/S2T3jQ8.jpeg", width = 1920, height = 1080 },
     { filename = "sm_manhattanmegamallnightv1", displayname = 'New York Mall',image="https://i.imgur.com/JDbC6hu.jpeg", width = 1920, height = 1080 },
     { filename = "gm_lilys_bedroom", displayname = 'Bedroom',image="https://i.imgur.com/n8XfLIa.jpeg", width = 1920, height = 1080 },
     { filename = "ph_scotch", displayname = 'Scotch',image="https://i.imgur.com/pWp9Az4.jpeg", width = 1920, height = 1080 },

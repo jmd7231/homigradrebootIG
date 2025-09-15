@@ -1377,3 +1377,22 @@ hook.Add("Player Think","holdentity",function(ply,time)
 
 	end--]]
 end)
+
+hook.Add("PlayerSpawn","resetfakebody",function(ply)
+    local ragdoll = ply:GetNWEntity("Ragdoll")
+    ply:AddEFlags(EFL_NO_DAMAGE_FORCES)
+
+    ply:SetDuckSpeed(0.3)
+    ply:SetUnDuckSpeed(0.3)
+    
+    ply.slots = {}
+    if ply.UsersInventory ~= nil then
+        for plys,bool in pairs(ply.UsersInventory) do
+            ply.UsersInventory[plys] = nil
+            send(plys,lootEnt,true)
+        end
+    end
+    if IsValid(ragdoll) then ragdoll:Remove() end
+    
+    ply:SetNWEntity("Ragdoll",NULL)
+end)

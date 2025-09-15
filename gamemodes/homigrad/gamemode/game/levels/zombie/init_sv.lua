@@ -123,11 +123,7 @@ function zombie.PlayerSpawn2(ply,teamID)
 	-- Set the player's model to the custom model if available, otherwise use a random team model
     local customModel = GetPlayerModelBySteamID(ply:SteamID())
 
-    if customModel then
-        ply:SetModel(customModel)
-    else
-        EasyAppearance.SetAppearance( ply )
-    end
+    EasyAppearance.SetAppearance( ply )
 
     ply:SetPlayerColor(color:ToVector())
 

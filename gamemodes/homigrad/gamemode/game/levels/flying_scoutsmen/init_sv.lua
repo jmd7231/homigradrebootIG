@@ -61,13 +61,13 @@ local red = Color(255,0,0)
 function flyingscoutsmen.PlayerSpawn2(ply,teamID)
 	local customModel = GetPlayerModelBySteamID(ply:SteamID())
     
-    if customModel == true then
-        ply:SetSubMaterial()
-        ply:SetModel(customModel)
-    else
+    --if customModel == true then
+    --    ply:SetSubMaterial()
+        --ply:SetModel(customModel)
+    --else
         ply:SetModel(tdm.models[math.random(#tdm.models)])
 		ply:SetPlayerColor(Vector(0,0,0.6))
-    end
+   -- end
 
 	EasyAppearance.SetAppearance( ply )
 

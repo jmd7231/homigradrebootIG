@@ -131,7 +131,7 @@ function homicide.Scoreboard_Status(ply)
 end
 
 local red,blue = Color(200,0,10),Color(75,75,255)
-local roundTypes = {"Shotgun", "Regular Round", "No Fire-Arms", "Wild West","Hitman"}
+local roundTypes = {"Shotgun", "Regular Round", "No Fire-Arms", "Wild West","Hitman", "SearchGroup"}
 local roundSound = {"snd_jack_hmcd_disaster.mp3","snd_jack_hmcd_shining.mp3","snd_jack_hmcd_panic.mp3","snd_jack_hmcd_wildwest.mp3","snd_jack_hmcd_disaster.mp3"}
 
 local DescCT = {
@@ -139,7 +139,8 @@ local DescCT = {
     [2] = "You have been given a M9 Beretta with one magazine.", --base
     [3] = "You have been given a Taser & Baton to take care of the traitor.", --gunfree
     [4] = "You & the traitor have been given identical revolvers.", --wildwest
-    [5] = "You have been given a shotgun. Be careful, the traitor will be likely to target you." -- hitman
+    [5] = "You have been given a shotgun. Be careful, the traitor will be likely to target you.", -- hitman
+    [6] = "Everyone has a radar." -- hitman
 }
 
 function homicide.HUDPaint_RoundLeft(white2)
@@ -156,9 +157,9 @@ function homicide.HUDPaint_RoundLeft(white2)
         end
         
 
-        draw.DrawText( "You are: " .. name, "HomigradRoundFont", ScrW() / 2, ScrH() / 2, Color( color.r,color.g,color.b,math.Clamp(startRound,0,1) * 255 ), TEXT_ALIGN_CENTER )
-        draw.DrawText( "Homicide", "HomigradRoundFont", ScrW() / 2, ScrH() / 8, Color( color.r,color.g,color.b,math.Clamp(startRound,0,1) * 255 ), TEXT_ALIGN_CENTER )
-        draw.DrawText( roundTypes[roundType], "HomigradRoundFont", ScrW() / 2, ScrH() / 5, Color( color.r,color.g,color.b ,math.Clamp(startRound,0,1) * 255 ), TEXT_ALIGN_CENTER )
+        draw.DrawText( "Your Role: " .. name, "HomigradRoundFont", ScrW() / 2, ScrH() / 2, Color( color.r,color.g,color.b,math.Clamp(startRound,0,1) * 255 ), TEXT_ALIGN_CENTER )
+        draw.DrawText( "Gamemode: Homicide", "HomigradRoundFont", ScrW() / 2, ScrH() / 8, Color( color.r,color.g,color.b,math.Clamp(startRound,0,1) * 255 ), TEXT_ALIGN_CENTER )
+        draw.DrawText( "Modifier: "..roundTypes[roundType], "HomigradRoundFont", ScrW() / 2, ScrH() / 5, Color( color.r,color.g,color.b ,math.Clamp(startRound,0,1) * 255 ), TEXT_ALIGN_CENTER )
 
 
         if lply.roleT then --Traitor

@@ -269,8 +269,10 @@ hook.Add("Player Death","Gib",function(ply, inflictor, attacker)
 	if dmgInfo:GetDamage() < 450 * (bone_integrity[ply.LastHitBoneName] or 1) then return end
 	
 	timer.Simple(0,function()
+		if not IsValid(ply:GetNWEntity("Ragdoll")) then return end
+
 		local rag = ply:GetNWEntity("Ragdoll")
-		if not IsValid(rag) then return end
+
 		local bone = rag:LookupBone(ply.LastHitBoneName)
 		
 		--bone = bone ~= 0 and bone or 1
@@ -297,7 +299,7 @@ hook.Add("HomigradGib","Gib",function(ent, dmgInfo, phys_bone)
 			local mul = RagdollDamageBoneMul[hitgroup] or 1
 
 			local newdmginfo = {}
-			newdmginfo.att = dmgInfo:GetAttacker()
+			newdmginfo.att = IsValid(dmgInfo:GetAttacker()) and dmgInfo:GetAttacker() or game.GetWorld()
 			newdmginfo.dmg = dmgInfo:GetDamage() / mul
 			newdmginfo.pos = dmgInfo:GetDamagePosition()
 			newdmginfo.force = dmgInfo:GetDamageForce()

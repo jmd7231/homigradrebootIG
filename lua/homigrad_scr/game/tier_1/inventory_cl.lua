@@ -95,6 +95,8 @@ net.Receive("inventory",function()
 	panel.Paint = function(self, w, h)
 		if not IsValid(lootEnt) or not LocalPlayer():Alive() then panel:Remove() return end
 
+		local nickname = lootEnt:IsPlayer() and lootEnt:Name() or lootEnt:GetNWString("Nickname") or "Corpse... (Player Left)"
+
 		draw.RoundedBox(0,0,0,w,h,black)
 		surface.SetDrawColor(255,255,255,128)
 		surface.DrawOutlinedRect(1,1,w - 2,h - 2)

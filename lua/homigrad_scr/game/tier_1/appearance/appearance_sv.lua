@@ -46,7 +46,7 @@ local function DoInvalid( ply )
 end
 
 function EasyAppearance.SetAppearance( ply )
-    if not ply:IsUserGroup("superadmin") then
+    --if not ply:IsUserGroup("superadmin") or ply:GetInfo("hg_usecustommodel") == false then
         EasyAppearance.SendRequest( ply )
 
         if ply.bRandomAppearance then
@@ -76,6 +76,8 @@ function EasyAppearance.SetAppearance( ply )
         ply:SetSubMaterial()
         ply:SetSubMaterial( tModelParms.intSubMat, EasyAppearance.Appearances[ sex ][ tAppearance.strColthesStyle ] )
         EasyAppearance.SendRequest( ply )
+    
+    --[[ no more custom models (for now)
     else
         local selectedModel = ply:GetInfo("cl_playermodel") -- Retrieve the model selected by the player
         local modelToUse = player_manager.TranslatePlayerModel( selectedModel )
@@ -87,4 +89,5 @@ function EasyAppearance.SetAppearance( ply )
         ply:SetSubMaterial()
         ply:SetModel(modelToUse)
     end
+    ]]
 end
