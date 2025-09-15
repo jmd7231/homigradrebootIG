@@ -1,4 +1,4 @@
-include("../../playermodelmanager_sv.lua")
+--include("../../playermodelmanager_sv.lua")
 
 function hideandseek.StartRoundSV(data)
     tdm.RemoveItems()
