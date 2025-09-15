@@ -12,6 +12,10 @@ homicide.teamEncoder = {
 
 homicide.RoundRandomDefalut = 6
 
+-- near the top, add a shared constant:
+homicide.PREP_TIME = homicide.PREP_TIME or 20
+
+
 local playsound = false
 if SERVER then
     util.AddNetworkString("roundType")
@@ -142,7 +146,7 @@ function homicide.HUDPaint_RoundLeft(white2)
     local lply = LocalPlayer()
     local name,color = homicide.GetTeamName(lply)
     
-    local startRound = roundTimeStart + 5 - CurTime()
+    local startRound = (roundTimeStart + (homicide.PREP_TIME or 20)) - CurTime()
     
     -- Show round start UI
     if startRound > 0 and lply:Alive() then
@@ -165,7 +169,7 @@ function homicide.HUDPaint_RoundLeft(white2)
                 role = name,
                 roleColor = color,
                 description = description,
-                duration = 5,
+                duration = (homicide.PREP_TIME or 20),  
                 sound = roundSound[homicide.roundType],
                 fadeScreen = true
             })

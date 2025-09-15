@@ -734,7 +734,7 @@ local function HG_BuildContextUI()
 
     -- ----- BUTTONS (vertical + icons-left) -----
     -- New: Game Settings (runs hg_gamesettings)
-    --HG_AddBtn(hg_List, "Game Settings", function() RunConsoleCommand("hg_gamesettings") end, "icon16/cog.png")
+    HG_AddBtn(hg_List, "Game Settings", function() RunConsoleCommand("hg_gamesettings") end, "icon16/cog.png")
 
     HG_AddBtn(hg_List, "Armor Menu", function()
         RunConsoleCommand("jmod_ez_inv")

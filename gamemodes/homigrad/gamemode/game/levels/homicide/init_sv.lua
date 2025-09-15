@@ -1,6 +1,14 @@
 -- Include the player model manager script (adjust the path as necessary)
 include("../../playermodelmanager_sv.lua")
 
+
+-- >>> ADD NEAR TOP-LEVEL (once) <<<
+homicide.PREP_TIME   = homicide.PREP_TIME or 20
+homicide.inPrep      = false
+homicide.prepEndTime = 0
+
+
+
 local function GetFriends(play)
     
     local huy = ""
@@ -226,15 +234,19 @@ hook.Add("Player Spawn","bruhwtf",function(ply)
     net.Send(ply)
 end)
 
+
+
+
+
+-- >>> REPLACE WHOLE FUNCTION: delay roles/equipment until prep ends <<<
 function homicide.StartRoundSV()
     tdm.RemoveItems()
     tdm.DirectOtherTeam(2,1,1)
 
     homicide.police = false
-	roundTimeStart = CurTime()
-	roundTime = math.min(math.max(math.ceil(#player.GetAll() / 2), 1) * 45, 330)
+    roundTimeStart  = CurTime()
+    roundTime       = math.min(math.max(math.ceil(#player.GetAll() / 2), 1) * 45, 330)
 
-    -- Bullshit check.
     if game.GetMap() == "gm_freeway_spacetunnel" then
         RunConsoleCommand("sv_gravity", "300")
     else
@@ -248,98 +260,140 @@ function homicide.StartRoundSV()
     roundTimeLoot = 5
 
     for i,ply in pairs(team.GetPlayers(2)) do ply:SetTeam(1) end
-    --for i,ply in pairs(team.GetPlayers(2)) do ply:SetTeam(1) end
 
     homicide.ct = {}
-    homicide.t = {}
+    homicide.t  = {}
 
-    local countT = 0
-    local countCT = 0
+    -- NEW: prep window state
+    homicide.inPrep      = true
+    homicide.prepEndTime = CurTime() + homicide.PREP_TIME
 
     local aviable = homicide.Spawns()
-    
-    tdm.SpawnCommand(PlayersInGame(),aviable,function(ply)
+
+    -- We'll honor forced picks AFTER prep
+    local pendingForceT  = {}
+    local pendingForceCT = {}
+    local countT, countCT = 0, 0
+
+    -- Spawn everyone right away, but with NO roles/gear
+    tdm.SpawnCommand(PlayersInGame(), aviable, function(ply)
         ply.roleT = false
         ply.roleCT = false
 
+        -- Defer forced choices, don't equip yet
         if ply.forceT then
             ply.forceT = nil
+            pendingForceT[#pendingForceT + 1] = ply
             countT = countT + 1
-
-            makeT(ply)
         end
-
         if ply.forceCT then
             ply.forceCT = nil
+            pendingForceCT[#pendingForceCT + 1] = ply
             countCT = countCT + 1
-
-            makeCT(ply)
         end
 
+        -- Defer sponsor toys until prep ends
         if ply:IsUserGroup("sponsor") or ply:IsUserGroup("supporterplus") then
-            ply:Give("weapon_vape")
-        end
-    end)
-
-    local players = PlayersInGame()
-    local count = math.max(math.ceil(#players / 10), 1) - countT
-    for i = 1,count do
-        local ply = table.Random(players)
-        table.RemoveByValue(players,ply)
-
-        makeT(ply)
-    end
-
-    local count = math.max(math.ceil(#players / 10), 1) - countCT
-
-    for i = 1,count do
-        local ply = table.Random(players)
-        table.RemoveByValue(players,ply)
-
-        if homicide.roundType <= 5 then
-            makeCT(ply)
-        end
-    end
-
-    timer.Simple(0,function()
-        for i,ply in pairs(homicide.t) do
-            if not IsValid(ply) then table.remove(homicide.t,i) continue end
-
-            homicide.SyncRole(ply,1)
-        end
-
-        for i,ply in pairs(homicide.ct) do
-            if not IsValid(ply) then table.remove(homicide.ct,i) continue end
-
-            homicide.SyncRole(ply,2)
+            ply._giveVapeAfterPrep = true
         end
     end)
 
     tdm.CenterInit()
-
     prePolicePlayers = {}
+
+    -- After PREP ends: pick roles, equip, announce
+    timer.Simple(homicide.PREP_TIME, function()
+        if not roundActiveName or roundActiveName ~= "homicide" then return end
+
+        homicide.inPrep = false
+
+        local players = PlayersInGame()
+
+        -- First, apply forced traitors
+        for _, ply in ipairs(pendingForceT) do
+            if IsValid(ply) and table.HasValue(players, ply) then
+                makeT(ply)
+                table.RemoveByValue(players, ply)
+            end
+        end
+
+        -- Then apply forced CTs (if your round type uses them)
+        for _, ply in ipairs(pendingForceCT) do
+            if IsValid(ply) and table.HasValue(players, ply) then
+                if homicide.roundType <= 5 then
+                    makeCT(ply)
+                end
+                table.RemoveByValue(players, ply)
+            end
+        end
+
+        -- Compute how many to pick randomly (same math as before)
+        local needT  = math.max(math.ceil(#PlayersInGame() / 10), 1) - countT
+        for i = 1, needT do
+            local ply = table.Random(players)
+            if not ply then break end
+            table.RemoveByValue(players, ply)
+            makeT(ply)
+        end
+
+        local needCT = math.max(math.ceil(#players / 10), 1) - countCT
+        for i = 1, needCT do
+            local ply = table.Random(players)
+            if not ply then break end
+            table.RemoveByValue(players, ply)
+            if homicide.roundType <= 5 then
+                makeCT(ply)
+            end
+        end
+
+        -- Now that roles exist, sync who needs to know
+        timer.Simple(0,function()
+            for i,ply in pairs(homicide.t) do
+                if IsValid(ply) then homicide.SyncRole(ply,1) end
+            end
+            for i,ply in pairs(homicide.ct) do
+                if IsValid(ply) then homicide.SyncRole(ply,2) end
+            end
+        end)
+
+        -- Restore "hands" and deferred cosmetics
+        for _, ply in ipairs(PlayersInGame()) do
+            if IsValid(ply) then
+                if not ply:HasWeapon("weapon_hands") then
+                    ply:Give("weapon_hands")
+                end
+                if ply._giveVapeAfterPrep then
+                    ply._giveVapeAfterPrep = nil
+                    ply:Give("weapon_vape")
+                end
+            end
+        end
+    end)
 
     return {roundTimeLoot = roundTimeLoot}
 end
 
+
+-- >>> MODIFY: don't end the round while in prep <<<
 function homicide.RoundEndCheck()
+    if homicide.inPrep then return end  -- NEW: skip logic during pre-start
+
     tdm.Center()
 
-	local TAlive = tdm.GetCountLive(homicide.t)
-	local Alive = tdm.GetCountLive(team.GetPlayers(1),function(ply) if ply.roleT or ply.isContr then return false end end)
+    local TAlive = tdm.GetCountLive(homicide.t)
+    local Alive = tdm.GetCountLive(team.GetPlayers(1),function(ply) if ply.roleT or ply.isContr then return false end end)
 
     if roundTimeStart + roundTime < CurTime() then
-		if not homicide.police then
+        if not homicide.police then
             SpawnPolicePlayers()
-		end
+        end
     elseif (roundTimeStart + 180) + roundTime < CurTime() then
         EndRound()
-	end
+    end
 
-	if TAlive == 0 and Alive == 0 then EndRound(1) return end
-
-	if TAlive == 0 then EndRound(2) end
-	if Alive == 0 then EndRound(1) end
+    if TAlive == 0 and Alive == 0 then EndRound(1) return end
+    if TAlive == 0 then EndRound(2) end
+    if Alive == 0 then EndRound(1) end
 end
 
 function homicide.PlayerInitialSpawn(ply)
@@ -371,25 +425,24 @@ end
 
 local empty = {}
 
+-- >>> MODIFY: do not hand out "hands" during prep <<<
 function homicide.PlayerSpawn2(ply,teamID)
     local teamTbl = homicide[homicide.teamEncoder[teamID]]
     local color = teamID == 1 and Color(math.random(55,165),math.random(55,165),math.random(55,165)) or teamTbl[2]
 
-	-- Set the player's model to the custom model if available, otherwise use a random team model
-    --local customModel = GetPlayerModelBySteamID(ply:SteamID())
-
-    --if customModel then
-     --   ply:SetSubMaterial()
-    --    ply:SetModel(customModel)
-    --else
     EasyAppearance.SetAppearance( ply )
-   -- end
-    
     ply:SetPlayerColor(color:ToVector())
 
-	ply:Give("weapon_hands")
+    -- During prep, no weapons at all:
+    if homicide.inPrep then
+        ply:StripWeapons()
+    else
+        ply:Give("weapon_hands")
+    end
+
     timer.Simple(0,function() ply.allowFlashlights = false end)
 end
+
 
 function homicide.PlayerCanJoinTeam(ply,teamID)
     if ply:IsAdmin() then
