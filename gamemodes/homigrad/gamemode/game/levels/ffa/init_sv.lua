@@ -1,12 +1,20 @@
 
 function ffa.StartRoundSV()
     tdm.RemoveItems()
+    local players = PlayersInGame()
 
     roundTimeStart = CurTime()
-    roundTime = 200
-    --roundTime = 300 + math.random(0, 300)
+    roundTime = 55
+    for i, ply in ipairs(players) do
+        roundTime = roundTime + 15
+    end 
 
-    local players = PlayersInGame()
+    if roundTime > 235 then
+        roundTime = 235 -- dont want it going on for like 10 minutes stright
+    end
+    
+    --roundTime = 300 + math.random(0, 300)
+    
     for i, ply in ipairs(players) do
         ply:SetTeam(1)
         ply:SetNWInt("KillCount", 0)
@@ -52,7 +60,7 @@ local extraItems = {
     ["medkit"] = "medkit",
     ["bandage"] = "med_band_big",
     ["grenade"] = "weapon_hg_rgd5",
-    ["bomb"] = "weapon_hidebomb",
+    ["molotov"] = "weapon_hg_molotov",
     ["radio"] = "weapon_radio",
     ["radar"] = "weapon_radar"
 }
@@ -84,7 +92,7 @@ function ffa.PlayerSpawn2(ply)
     end
 
     if roundDmType == 4 then
-        ply:Give(extraItems["bomb"])
+        ply:Give(extraItems["molotov"])
     end
 
 
@@ -105,7 +113,7 @@ function ffa.RoundEndCheck()
     for i, ply in ipairs(team.GetPlayers(1)) do
         local kills = ply:GetNWInt("KillCount", 0)
 
-        if kills >= 50 then
+        if kills >= 30 then
             winner = ply
             break
         end
@@ -128,7 +136,7 @@ function ffa.EndRound(winner)
     if winner then
         PrintMessage(3, winner:GetName() .. " won with " .. winner:GetNWInt("KillCount") .. " kills!")
     else
-        PrintMessage(3, "Time is up! No one reached 50 kills.")
+        PrintMessage(3, "Time is up! No one reached 30 kills.")
     end
 
     for i, ply in ipairs(player.GetAll()) do
@@ -177,9 +185,9 @@ function ffa.HandlePlayerDeath(victim, inflictor, attacker)
 
     timer.Simple(6, function()
         if IsValid(victim) and victim:Team() ~= 1002 and roundActiveName == "ffa" and victim:Alive() == false then
-            victim:Spawn()
+            --victim:Spawn()
 
-            ffa.PlayerSpawn2(victim)
+            --ffa.PlayerSpawn2(victim)
 
            	if victim:Alive() then victim:KillSilent() end
 
@@ -221,4 +229,5 @@ function ffa.PlayerCanJoinTeam(ply, teamID)
 end
 
 function ffa.GuiltLogic() return false end
+
 damageTracking = {}
