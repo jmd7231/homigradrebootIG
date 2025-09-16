@@ -1,6 +1,8 @@
-if not engine.ActiveGamemode() == "homigrad" then return end
+if engine.ActiveGamemode() ~= "homigrad" then return end
 local blackListedWeps = {
-	["weapon_hands"] = true
+	["weapon_hands"] = true,
+	["weapon_physgun"] = true,
+	["gmod_tool"] = true
 }
 
 local blackListedAmmo = {
@@ -95,7 +97,7 @@ net.Receive("inventory",function()
 	panel.Paint = function(self, w, h)
 		if not IsValid(lootEnt) or not LocalPlayer():Alive() then panel:Remove() return end
 
-		local nickname = lootEnt:IsPlayer() and lootEnt:Name() or lootEnt:GetNWString("Nickname") or "Corpse... (Player Left)"
+		local nickname = lootEnt:IsPlayer() and lootEnt:Name() or lootEnt:GetNWString("Nickname") or "A Corpse"
 
 		draw.RoundedBox(0,0,0,w,h,black)
 		surface.SetDrawColor(255,255,255,128)
@@ -109,6 +111,7 @@ net.Receive("inventory",function()
 	local corner = 6
 
 	for wep, weapon in pairs(items) do
+		if blackListedWeps[wep] then continue end
 		local button = vgui.Create("DButton",panel)
 		button:SetPos(x,y)
 		button:SetSize(64,64)

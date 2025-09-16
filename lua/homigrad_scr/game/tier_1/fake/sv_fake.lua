@@ -415,21 +415,26 @@ hook.Add("PlayerSpawn","z",function(ply)
 	if PLYSPAWN_OVERRIDE then return true end
 end)
 
-hook.Add("PlayerSpawn","resetfakebody",function(ply) --обнуление регдолла после вставания
-	ply:AddEFlags(EFL_NO_DAMAGE_FORCES)
+hook.Add("PlayerSpawn","resetfakebody",function(ply)
+    local ragdoll = ply:GetNWEntity("Ragdoll")
+    ply:AddEFlags(EFL_NO_DAMAGE_FORCES)
 
-	ply:SetDuckSpeed(0.3)
-	ply:SetUnDuckSpeed(0.3)
-	
-	ply.slots = {}
-	if ply.UsersInventory ~= nil then
-		for plys,bool in pairs(ply.UsersInventory) do
-			ply.UsersInventory[plys] = nil
-			send(plys,lootEnt,true)
-		end
+    ply:SetDuckSpeed(0.3)
+    ply:SetUnDuckSpeed(0.3)
+    
+    ply.slots = {}
+    if ply.UsersInventory ~= nil then
+        for plys,bool in pairs(ply.UsersInventory) do
+            ply.UsersInventory[plys] = nil
+            send(plys,lootEnt,true)
+        end
+    end
+
+    if IsValid(ragdoll) then -- TODO: check if any items are on the ragdoll
+		ragdoll:Remove()
 	end
-	
-	ply:SetNWEntity("Ragdoll",NULL)
+    
+    ply:SetNWEntity("Ragdoll",NULL)
 end)
 
 util.AddNetworkString("Unload")
@@ -1378,7 +1383,7 @@ hook.Add("Player Think","holdentity",function(ply,time)
 	end--]]
 end)
 
-hook.Add("PlayerSpawn","resetfakebody",function(ply)
+--[[hook.Add("PlayerSpawn","resetfakebody",function(ply) -- We already did this??
     local ragdoll = ply:GetNWEntity("Ragdoll")
     ply:AddEFlags(EFL_NO_DAMAGE_FORCES)
 
@@ -1392,7 +1397,9 @@ hook.Add("PlayerSpawn","resetfakebody",function(ply)
             send(plys,lootEnt,true)
         end
     end
-    if IsValid(ragdoll) then ragdoll:Remove() end
+    if IsValid(ragdoll) then -- check if any items are on the ragdoll
+		ragdoll:Remove() 
+	end
     
     ply:SetNWEntity("Ragdoll",NULL)
-end)
+end)]]

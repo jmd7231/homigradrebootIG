@@ -133,9 +133,10 @@ end)
 
 local trollmsgs = {
 	"You have been kicked. Error Code: AT6001",
-	"You have been banned for exploits.",
-	"Shouldn't of taken that...",
-	"Off you go!",
+	"You have been banned for exploits. Error Code: AT6001",
+	"Shouldn't of taken that... Error Code: AT6001",
+	"Not Yours To Take! Error Code: AT6001",
+	"Oops. Error Code: AT6001"
 }
 
 net.Receive("ply_take_item",function(len,ply)
