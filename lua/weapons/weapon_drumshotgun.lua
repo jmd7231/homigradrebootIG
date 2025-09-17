@@ -57,7 +57,7 @@ SWEP.vbwAng = Angle(0, -35, 0)
 SWEP.addAng = Angle(-3,0,0)
 SWEP.addPos = Vector(-14,-0.7,-0.5)
 
-SWEP.SightPos = Vector(-26,1,-0.5)
+SWEP.SightPos = Vector(-26,0.1,-0.45)
 
 function SWEP:ApplyEyeSpray()
     self.eyeSpray = self.eyeSpray - Angle(5,math.Rand(-2,2),0)
