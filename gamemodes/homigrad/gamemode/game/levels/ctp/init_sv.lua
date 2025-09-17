@@ -59,7 +59,7 @@ function ctp.StartRoundSV()
     tdm.RemoveItems()
 
 	roundTimeStart = CurTime()
-	roundTime = 60*15 --15 минут
+	roundTime = 60*5 + math.min(#player.GetAll()/4,2)*60
 
 	for i,ply in pairs(team.GetPlayers(3)) do ply:SetTeam(math.random(1,2)) end
 
@@ -214,9 +214,9 @@ function ctp.EndRound(winner)
 	print("End round, win '" .. tostring(winner) .. "'")
 
 	for _, ply in ipairs(player.GetAll()) do
-		if !winner then ply:ChatPrint("Nobody Wins") continue end
+		if !winner then ply:ChatPrint("Nobody Wins. Your All Losers!") continue end
 		if winner == ply:Team() then ply:ChatPrint("Victory!") end
-		if winner ~= ply:Team() then ply:ChatPrint("Defeat") end
+		if winner ~= ply:Team() then ply:ChatPrint("Defeat.") end
 	end
 
     timer.Remove("CP_NewWave")

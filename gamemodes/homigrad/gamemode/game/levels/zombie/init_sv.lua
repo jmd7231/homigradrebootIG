@@ -24,11 +24,16 @@ end
 local zombies = {
 	"npc_zombie",
 	"npc_fastzombie",
-	"npc_headcrab",
 	"npc_zombie_torso",
 	"npc_headcrab_fast",
 	"npc_fastzombie_torso",
-	--"npc_headcrab_black",--racism
+}
+
+local rareZombies = {
+	"npc_poisonzombie",
+	"npc_antlionguardian",
+	"npc_headcrab", -- put in rare because they are annoying as hell
+	--"npc_headcrab_black", -- not racism, its actually just the poison headcrab ._.
 }
 
 function zombie.RoundEndCheck()
@@ -60,7 +65,19 @@ function zombie.RoundEndCheck()
 
 		local pos = zombies_spawnpoints[math.random(#zombies_spawnpoints)]
 
-		local zombie = ents.Create(zombies[math.random(#zombies)])
+		local zombie = nil
+
+		if math.random(1,20) == 20 then
+			zombie = ents.Create(rareZombies[math.random(#rareZombies)])
+		else
+			zombie = ents.Create(zombies[math.random(#zombies)])
+		end
+
+		for i,ent in pairs(ents.GetAll())do
+            if ent:IsNPC() then
+                ent:AddEntityRelationship(zombie,D_LI,99)
+            end
+        end
 
 		local tr = {}
 		tr.start = pos
@@ -68,7 +85,7 @@ function zombie.RoundEndCheck()
 		tr.filter = zombie
 		tr.mask = MASK_SOLID_BRUSHONLY
 
-		if not util.TraceEntityHull(tr, zombie).Hit then
+		if not util.TraceEntityHull(tr, zombie).Hit and zombie and pos then
 			zombie:SetPos(pos)
 			zombie:Spawn()
 			local ply = players[math.random(#players)]

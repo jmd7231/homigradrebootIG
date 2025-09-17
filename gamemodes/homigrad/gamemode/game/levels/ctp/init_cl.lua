@@ -92,7 +92,7 @@ function ctp.HUDPaint_RoundLeft(white2) --позиции точек и счёт
     --время раунда
     local time = math.Round(roundTimeStart + roundTime - CurTime())
     local ftime = string.FormattedTime( time, "%02i:%02i" )
-	if time < 0 then ftime = "Иди нахуй" end
+	if time < 0 then ftime = "Not Right Now." end
 
 	draw.SimpleText(ftime,"HomigradFont",ScrW()/2,ScrH()-25,white,TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 
@@ -100,5 +100,5 @@ function ctp.HUDPaint_RoundLeft(white2) --позиции точек и счёт
     
     local time2 = math.Round(respawntime + 20 - CurTime(),0)
     local ftime2 = string.FormattedTime( time2, "%02i:%02i" )
-    draw.SimpleText("Время до респавна: " .. ftime2,"HomigradFont",ScrW()/2,ScrH()-55,white,TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+    draw.SimpleText("Time Until Respawn: " .. ftime2,"HomigradFont",ScrW()/2,ScrH()-55,white,TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 end

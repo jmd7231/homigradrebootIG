@@ -126,7 +126,14 @@ COMMANDS.point = {function(ply,args)
 	table.insert(tbl,point)
 	WriteDataMap(name,tbl)
 
-	PrintMessage(3,"Added New Point: " .. args[1])
+	ply:ConCommand("hg_subtitle Added New Point: " .. args[1] .. ", red")
+
+	for _, ply in ipairs(player.GetAll()) do
+		if ply:IsAdmin() then
+			ply:ChatPrint("[ADMIN] " ..ply:Nick() .. " Added New Point: " .. args[1])
+		end
+	end
+	
 	SetupSpawnPointsList()
 	SendSpawnPoint()
 end}
@@ -141,13 +148,13 @@ COMMANDS.pointreset = {function(ply,args)
 			break
 		end
 
-		PrintMessage(3,"Точки с именем " .. args[1] .. " очищены.")
+		PrintMessage(3, args[1] .. " Points Were Cleared!")
 	else
 		for name,info in pairs(SpawnPointsList) do
 			WriteDataMap(name)
 		end
 
-		PrintMessage(3,"Все точки очищены.")
+		PrintMessage(3,"All Points Cleared!")
 	end
 
 	SetupSpawnPointsList()

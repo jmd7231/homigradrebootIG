@@ -1,4 +1,4 @@
---table.insert(LevelList,"ctp")
+table.insert(LevelList,"ctp")
 ctp = {}
 ctp.Name = "Capture The Point"
 ctp.points = {}
@@ -34,7 +34,7 @@ function ctp.StartRound()
     local ply = player.GetAll()
 	game.CleanUpMap(false)
     ctp.points = {}
-    if !file.Read( "homigrad/maps/"..game.GetMap()..".txt", "DATA" ) and SERVER then
+    if !file.Read( "homigrad/maps/"..game.GetMap()..".txt", "DATA" ) and SERVER then -- idk where tf this file is
         print("No points are available on this map! Admins have to place them with: !point control_point") 
         PrintMessage(HUD_PRINTCENTER, "No points are available on this map! Admins have to place them with: !point control_point")
     end
@@ -66,5 +66,6 @@ function ctp.StartRound()
 end
 
 --тот кто это кодил нужно убить нахуй
+-- i agree russian guy
 
 ctp.SupportCenter = true
