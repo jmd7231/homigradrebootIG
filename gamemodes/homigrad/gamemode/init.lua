@@ -98,8 +98,9 @@ function GM:PlayerSpawn(ply)
 	if ply:IsUserGroup("sponsor") or ply:IsUserGroup("supporterplus") then
 		ply:Give("weapon_vape")
 	end
-	
 
+	TableRound().PlayerSpawn2(ply,ply:Team())
+	
 	RunConsoleCommand("hg_usecustommodel","false")
 end
 

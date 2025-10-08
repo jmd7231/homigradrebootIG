@@ -101,7 +101,7 @@ function SWEP:DrawHUD()
         surface.SetDrawColor(Color(255, 255, 255, 255))
         draw.NoTexture()
         Circle(x, y, 5 / frac, 32)
-        draw.DrawText(ply and ("связать "..ply:Nick()) or "", "TargetID", x, y - 40, color_white, TEXT_ALIGN_CENTER )
+        draw.DrawText(ply and ("Zip-tie "..ply:Nick()) or "", "TargetID", x, y - 40, color_white, TEXT_ALIGN_CENTER )
         if self.CuffTime then
             surface.DrawRect(x - 50,y + 50,100 - math.max((self.CuffTime - CurTime() + cuffTime) * 100,0),25)
         end

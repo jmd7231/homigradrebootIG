@@ -194,41 +194,34 @@ end
 
 function tdm.PlayerSpawn2(ply,teamID)
 	local teamTbl = tdm[tdm.teamEncoder[teamID]]
-	local color = teamID or teamTbl[2]
+	local color = teamTbl[2]
 
 	-- Set the player's model to the custom model if available, otherwise use a random team model
     local customModel = GetPlayerModelBySteamID(ply:SteamID())
+
     if customModel then
         ply:SetModel(customModel)
 		ply:SetPlayerColor(color:ToVector())
     else
-		print(ply)
         ply:SetModel(teamTbl.models[math.random(#teamTbl.models)])
-		ply:SetPlayerColor(color:ToVector())
     end
 
-	for _, weapon in pairs(teamTbl.weapons) do
-		ply:Give(weapon)
-	end
+	ply:SetPlayerColor(color:ToVector())
+
+	for i,weapon in pairs(teamTbl.weapons) do ply:Give(weapon) end
 
 	tdm.GiveSwep(ply, teamTbl.main_weapon)
 	tdm.GiveSwep(ply, teamTbl.secondary_weapon)
 
 	if math.random(1,4) == 4 then ply:Give("adrenaline") end
+
 	if math.random(1,4) == 4 then ply:Give("morphine") end
+
 	if math.random(1,3) == 3 then 
 		if ply:Team() == 1 then ply:Give("weapon_hg_f1") 
 		else ply:Give("weapon_hg_rgd5") end 
 	end
-	-- local r = math.random(1, 3)
-	-- ply:Give(r == 1 and "food_fishcan" or r == 2 and "food_spongebob_home" or r == 3 and "food_lays")
-	if ply:IsUserGroup("sponsor") or ply:IsUserGroup("supporterplus") or ply:IsAdmin() then
-		if math.random(1, 5) == 5 then ply:Give("weapon_gear_bloxycola") end
-		if math.random(1, 5) == 5 then ply:Give("weapon_gear_cheezburger") end
-
-		ply:Give("weapon_vape")
-	end
-
+	
 	local r = math.random(1, 2)
 	JMod.EZ_Equip_Armor(ply, "Medium-Helmet",color)
 	JMod.EZ_Equip_Armor(ply, (r == 1 and "Medium-Vest") or (r == 2 and "Light-Vest"), color)
