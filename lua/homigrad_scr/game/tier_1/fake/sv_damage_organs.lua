@@ -145,7 +145,7 @@ hook.Add("HomigradDamage","Organs",function(ply,hitgroup,dmginfo,rag,armorMul,ar
                     
                     if ply:IsPlayer() then
                         --ply:ChatPrint("You feel your spine shatter.\nYou can no longer walk.")
-                        RunConsoleCommand("hg_subtitle 'i feel my spine shatter', black")
+                        ply:ConCommand("hg_subtitle 'I feel my spine shatter and can no longer walk', red")
                     end
 
                     ent:EmitSound("NPC_Barnacle.BreakNeck",70,125,0.7,CHAN_ITEM)

@@ -308,6 +308,7 @@ hook.Add("HomigradGib","Gib",function(ent, dmgInfo, phys_bone)
 				local rag = ent.FakeRagdoll
 
 				local dmg = DamageInfo()
+				if not IsValid(dmg) then return end
 				dmg:SetAttacker(newdmginfo.att)
 				dmg:SetDamage(newdmginfo.dmg)
 				dmg:SetDamagePosition(newdmginfo.pos)

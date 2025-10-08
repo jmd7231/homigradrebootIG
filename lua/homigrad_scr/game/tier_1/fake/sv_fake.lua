@@ -451,6 +451,7 @@ function Stun(Entity)
 		if not IsValid(Entity.FakeRagdoll) then Faking(Entity) end
 		timer.Create("StunTime"..Entity:EntIndex(), 8, 1, function() end)
 		local fake = Entity:GetNWEntity("Ragdoll")
+		if not IsValid(fake) then return end
 		timer.Create( "StunEffect"..Entity:EntIndex(), 0.1, 80, function()
 			local rand = math.random(1,50)
 			if rand == 50 then

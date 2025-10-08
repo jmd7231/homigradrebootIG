@@ -178,16 +178,15 @@ function ffa.HandlePlayerDeath(victim, inflictor, attacker)
 
     timer.Simple(6, function()
         if IsValid(victim) and victim:Team() ~= 1002 and roundActiveName == "ffa" and victim:Alive() == false then
-            --victim:Spawn()
-
-            ffa.PlayerSpawn2(victim)
-
+            --ffa.PlayerSpawn2(victim)
+            print("[FFA] PlayerSpawn2 called for " .. victim:Nick())
+            victim:Spawn()
+		    victim.allowFlashlights = true
            	--if victim:Alive() then victim:KillSilent() end
 
-		    if func then func(victim) end
+		    --if func then func(victim) end
 		
-		    victim:Spawn()
-		    victim.allowFlashlights = true
+
 
             local aviable = ReadDataMap("dm")
             aviable = #aviable ~= 0 and aviable or homicide.Spawns()
