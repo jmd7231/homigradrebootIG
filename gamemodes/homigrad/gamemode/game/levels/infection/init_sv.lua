@@ -1,6 +1,6 @@
 --include("../../playermodelmanager_sv.lua")
 
-function hideandseek.StartRoundSV(data)
+function infection.StartRoundSV(data)
     tdm.RemoveItems()
 
 	tdm.DirectOtherTeam(1,2)
@@ -14,8 +14,8 @@ function hideandseek.StartRoundSV(data)
     for i,ply in pairs(players) do
 		ply.exit = false
 
-		if ply.hideandseekForceT then
-			ply.hideandseekForceT = nil
+		if ply.infectionForceT then
+			ply.infectionForceT = nil
 
 			ply:SetTeam(1)
 		end
@@ -52,7 +52,7 @@ function hideandseek.StartRoundSV(data)
 	end
 	
 	timer.Simple(15, function()
-		if roundActiveName ~= "hideandseek" then return end
+		if roundActiveName ~= "infection" then return end
 
 		for _, seeker in ipairs(seekers) do
 			if IsValid(seeker) then
@@ -79,18 +79,18 @@ function hideandseek.StartRoundSV(data)
         end
     end
 
-	hideandseek.police = false
+	infection.police = false
 
 	tdm.CenterInit()
 
 	return {roundTimeLoot = roundTimeLoot}
 end
 
-function hideandseek.RoundEndCheck()
+function infection.RoundEndCheck()
     if roundTimeStart + roundTime < CurTime() then
 		spawnsCT = tdm.SpawnsTwoCommand()
-		if not hideandseek.police then
-			hideandseek.police = true
+		if not infection.police then
+			infection.police = true
 			PrintMessage(3,"Special Forces have arrived! Hiders can now escape through select points on the map.")
 
 			local aviable = ReadDataMap("spawnpointsct")
@@ -121,7 +121,7 @@ function hideandseek.RoundEndCheck()
 
 	local list = ReadDataMap("spawnpoints_ss_exit")
 
-	if hideandseek.police then
+	if infection.police then
 		for i,ply in pairs(team.GetPlayers(2)) do
 			if not ply:Alive() or ply.exit then continue end
 
@@ -148,10 +148,10 @@ function hideandseek.RoundEndCheck()
 	if TAlive == 0 then EndRound(2) return end
 end
 
-function hideandseek.EndRound(winner) tdm.EndRoundMessage(winner) end
+function infection.EndRound(winner) tdm.EndRoundMessage(winner) end
 
-function hideandseek.PlayerSpawn2(ply,teamID)
-	local teamTbl = hideandseek[hideandseek.teamEncoder[teamID]]
+function infection.PlayerSpawn2(ply,teamID)
+	local teamTbl = infection[infection.teamEncoder[teamID]]
 	local color = teamTbl[2]
 
     ply:SetPlayerColor(color:ToVector())
@@ -187,10 +187,10 @@ function hideandseek.PlayerSpawn2(ply,teamID)
 	ply.allowFlashlights = false
 end
 
-function hideandseek.PlayerInitialSpawn(ply) ply:SetTeam(2) end
+function infection.PlayerInitialSpawn(ply) ply:SetTeam(2) end
 
-function hideandseek.PlayerCanJoinTeam(ply,teamID)
-	ply.hideandseekForceT = nil
+function infection.PlayerCanJoinTeam(ply,teamID)
+	ply.infectionForceT = nil
 
 	if teamID == 3 then
 		if ply:IsAdmin() then
@@ -207,7 +207,7 @@ function hideandseek.PlayerCanJoinTeam(ply,teamID)
 
     if teamID == 1 then
 		if ply:IsAdmin() then
-			ply.hideandseekForceT = true
+			ply.infectionForceT = true
 
 			ply:ChatPrint("Милости прошу")
 
@@ -240,7 +240,7 @@ local common = {"food_lays","weapon_pipe","weapon_bat","med_band_big","med_band_
 local uncommon = {"medkit","weapon_molotok","painkiller"}
 local rare = {"weapon_fiveseven","weapon_gurkha","weapon_t","weapon_per4ik"}
 
-function hideandseek.ShouldSpawnLoot()
+function infection.ShouldSpawnLoot()
    	if roundTimeStart + roundTimeLoot - CurTime() > 0 then return false end
 
 	local chance = math.random(100)
@@ -255,8 +255,8 @@ function hideandseek.ShouldSpawnLoot()
 	end
 end
 
-function hideandseek.PlayerDeath(ply,inf,att) return false end
+function infection.PlayerDeath(ply,inf,att) return false end
 
-function hideandseek.GuiltLogic(ply,att,dmgInfo)
+function infection.GuiltLogic(ply,att,dmgInfo)
 	if att.isContr and ply:Team() == 2 then return dmgInfo:GetDamage() * 3 end
 end

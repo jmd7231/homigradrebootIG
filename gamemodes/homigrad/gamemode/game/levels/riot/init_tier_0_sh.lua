@@ -6,7 +6,7 @@ riot.red = {"Police",Color(55,55,150),
 	weapons = {"weapon_hands","weapon_police_bat","med_band_big","med_band_small","weapon_taser","weapon_handcuffs","weapon_radio"},
 	main_weapon = {"weapon_pepperspray","medkit","painkiller","weapon_pepperspray","medkit","painkiller","weapon_beanbag"},
 	secondary_weapon = {""},
-	models = {"models/monolithservers/mpd/male_04.mdl","models/monolithservers/mpd/male_03.mdl","models/monolithservers/mpd/male_05.mdl","models/monolithservers/mpd/male_02.mdl"}
+	models = {"models/player/police.mdl"}
 }
 
 

@@ -196,16 +196,6 @@ function tdm.PlayerSpawn2(ply,teamID)
 	local teamTbl = tdm[tdm.teamEncoder[teamID]]
 	local color = teamTbl[2]
 
-	-- Set the player's model to the custom model if available, otherwise use a random team model
-    local customModel = GetPlayerModelBySteamID(ply:SteamID())
-
-    if customModel then
-        ply:SetModel(customModel)
-		ply:SetPlayerColor(color:ToVector())
-    else
-        ply:SetModel(teamTbl.models[math.random(#teamTbl.models)])
-    end
-
 	ply:SetPlayerColor(color:ToVector())
 
 	for i,weapon in pairs(teamTbl.weapons) do ply:Give(weapon) end

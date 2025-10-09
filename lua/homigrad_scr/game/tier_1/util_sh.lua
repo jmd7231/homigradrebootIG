@@ -116,12 +116,14 @@ end)
 
 hook.Add("Player Death","SetHull",function(ply, attacker)
     timer.Simple(0,function()
-        local ang = ply:EyeAngles()
-        if ang[3] == 180 then
-            ang[2] = ang[2] + 180
-        end
-        ang[3] = 0
-        ply:SetEyeAngles(ang)
+		if IsValid(ply) then
+        	local ang = ply:EyeAngles()
+        	if ang[3] == 180 then
+            	ang[2] = ang[2] + 180
+        	end
+        	ang[3] = 0
+        	ply:SetEyeAngles(ang)
+		end
     end)
 end)
 
@@ -298,13 +300,14 @@ function hg.KeyDown(owner,key)
 	return SERVER and owner:IsPlayer() and owner:KeyDown(key) or CLIENT and localKey
 end
 
+print("yes1")
+
 -- PewPaws!!!
 game.AddParticles("particles/muzzleflashes_test.pcf")
 game.AddParticles("particles/muzzleflashes_test_b.pcf")
 game.AddParticles("particles/pcfs_jack_muzzleflashes.pcf")
-game.AddParticles("particles/ar2_muzzle.pcf")
 
-local huyprecahche = {
+local huyprecache = {
     "muzzleflash_SR25",
     "pcf_jack_mf_tpistol",
     "pcf_jack_mf_mshotgun",
@@ -326,42 +329,16 @@ local huyprecahche = {
     "muzzleflash_mp5",
     "muzzleflash_suppressed",
     "muzzleflash_MINIMI",
-    "muzzleflash_svd",
-    "new_ar2_muzzle"
+    "muzzleflash_svd"
 }
-for k,v in ipairs(huyprecahche) do
+for _,v in ipairs(huyprecache) do
     PrecacheParticleSystem(v)
 end
--- CAAABOOOOMS!
 
+-- Explosions
 game.AddParticles("particles/pcfs_jack_explosions_large.pcf")
 game.AddParticles("particles/pcfs_jack_explosions_medium.pcf")
 game.AddParticles("particles/pcfs_jack_explosions_small.pcf")
-game.AddParticles("particles/pcfs_jack_nuclear_explosions.pcf")
-game.AddParticles("particles/pcfs_jack_moab.pcf")
-game.AddParticles("particles/gb5_large_explosion.pcf")
-game.AddParticles("particles/gb5_500lb.pcf")
-game.AddParticles("particles/gb5_100lb.pcf")
-game.AddParticles("particles/gb5_50lb.pcf")
-game.AddParticles("particles/pcfs_jack_muzzleflashes.pcf")
 game.AddParticles("particles/pcfs_jack_explosions_incendiary2.pcf")
-game.AddParticles("particles/lighter.pcf")
 
-PrecacheParticleSystem("Lighter_flame")
-PrecacheParticleSystem("pcf_jack_nuke_ground")
-PrecacheParticleSystem("pcf_jack_nuke_air")
-PrecacheParticleSystem("pcf_jack_moab")
-PrecacheParticleSystem("pcf_jack_moab_air")
-PrecacheParticleSystem("cloudmaker_air")
-PrecacheParticleSystem("cloudmaker_ground")
-PrecacheParticleSystem("500lb_air")
-PrecacheParticleSystem("500lb_ground")
-PrecacheParticleSystem("100lb_air")
-PrecacheParticleSystem("100lb_ground")
-PrecacheParticleSystem("50lb_air")
-PrecacheParticleSystem("pcf_jack_incendiary_ground_sm2")
-PrecacheParticleSystem("pcf_jack_groundsplode_small3")
-PrecacheParticleSystem("pcf_jack_smokebomb3")
-PrecacheParticleSystem("pcf_jack_groundsplode_medium")
-PrecacheParticleSystem("pcf_jack_groundsplode_large")
-PrecacheParticleSystem("pcf_jack_airsplode_medium")
+print("yes2")

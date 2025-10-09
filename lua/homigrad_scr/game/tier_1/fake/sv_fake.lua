@@ -678,8 +678,11 @@ function PlayerMeta:CreateRagdoll(attacker, dmginfo, force)
 	rag:SetNWVector("plycolor",self:GetPlayerColor())
 	rag:SetSkin(self:GetSkin())
 	rag:Spawn()
-
-	rag:CallOnRemove("huyhjuy",function() self.firstrag = false end)
+	
+	if rag then -- idk why i have to do this but it fixes an error so yeah
+		rag:CallOnRemove("huyhjuy",function() self.firstrag = false end)
+	end
+	
 	rag:CallOnRemove("huy2ss",function()
 		if not rag.unfaked and RagdollOwner(rag) then
 			rag.unfaked = false

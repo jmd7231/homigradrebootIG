@@ -339,6 +339,22 @@ COMMANDS.levelnext = {function(ply,args)
 	end
 end,1}
 
+COMMANDS.levelrestart = {function(ply,args)
+	if not GetConVar("sv_homicideonly"):GetBool() then
+		if ply:IsAdmin() then
+			if not SetActiveNextRound(roundActiveName) then ply:ChatPrint("Error has occured!") return else EndRound() end
+		else
+			local calling_ply = ply
+			if (calling_ply.canVoteNext or CurTime()) - CurTime() <= 0 and table.HasValue(LevelList,args[1]) then
+				ulx.doVote( "Restart the current Gamemode: " .. tostring(roundActiveName) .. "?", { "Yes","No" }, donaterVoteLevel, 15, _, _, argv, calling_ply, args)
+			end
+		end
+	else
+		ply:ChatPrint("Error! LevelRestart is not available in Homicide only servers! Please Use !LevelEnd Instead.")
+	end
+end,1}
+
+
 COMMANDS.levels = {function(ply,args)
 	local text = ""
 	for i,name in pairs(LevelList) do

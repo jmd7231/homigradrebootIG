@@ -118,6 +118,7 @@ hook.Add("DoPlayerDeath","huyhuy",function(ply)
 	end
 
 	timer.Simple(0.1,function()
+		if not IsValid(ply) then return end
 		local rag = ply:GetNWEntity("Ragdoll",ply.FakeRagdoll)
 		rag = IsValid(rag) and rag or ply.FakeRagdoll
 		if IsValid(rag) then
