@@ -321,11 +321,19 @@ local function donaterVoteLevel(t,argv,calling_ply,args)
 
 	if winner == 1 then
 		PrintMessage(HUD_PRINTTALK,"Vote Succeeded! Next level is " .. tostring(args[1]))
+		for _, newPly in pairs(player.GetAll()) do
+			newPly:ConCommand("hg_subtitle 'Vote Succeeded! The Next Level Is: " .. tostring(TableRound(roundActiveNameNext).Name) .. "!', green")
+		end
 		SetActiveNextRound(args[1])
 	elseif winner == 2 then
 		PrintMessage(HUD_PRINTTALK,"Vote failed. Next level will not change.")
 	else
-		PrintMessage(HUD_PRINTTALK,"There was an error. Perhaps no-one voted?")
+		for _, newPly in pairs(player.GetAll()) do
+			if newPly:IsAdmin() then
+				newPly:ConCommand("hg_subtitle 'Error Occured during Vote! Perhaps no-one voted?', red")
+			end
+		end
+		PrintMessage(HUD_PRINTTALK,"Error Occured during Vote! Perhaps no-one voted?")
 	end
 
 	calling_ply.canVoteNext = CurTime() + 300
@@ -349,22 +357,30 @@ COMMANDS.levelnext = {function(ply,args)
 			end
 		end
 	else
-		ply:ChatPrint("Error! Level next is not available in Homicide only servers!")
+		ply:ConCommand("hg_subtitle '!levelnext is not available in Homicide only servers!', red")
 	end
 end,1}
 
 COMMANDS.levelrestart = {function(ply,args)
 	if not GetConVar("sv_homicideonly"):GetBool() then
 		if ply:IsAdmin() then
-			if not SetActiveNextRound(roundActiveName) then ply:ChatPrint("Error has occured!") return else EndRound() end
+			if not SetActiveNextRound(roundActiveName) then ply:ChatPrint("Error has occured!") 
+			return else 
+				EndRound() 
+				for _, newPly in pairs(player.GetAll()) do
+					newPly:ConCommand("hg_subtitle " .. tostring(TableRound(roundActiveNameNext).Name) .. " has been forced to restart!, green")
+				end
+			end
 		else
 			local calling_ply = ply
 			if (calling_ply.canVoteNext or CurTime()) - CurTime() <= 0 and table.HasValue(LevelList,args[1]) then
-				ulx.doVote( "Restart the current Gamemode: " .. tostring(roundActiveName) .. "?", { "Yes","No" }, donaterVoteLevel, 15, _, _, argv, calling_ply, args)
+				--ulx.doVote( "Restart the current Gamemode: " .. tostring(roundActiveName) .. "?", { "Yes","No" }, donaterVoteLevel, 15, _, _, argv, calling_ply, args)
+				ulx.doVote( "Restart the current Gamemode: " .. tostring(TableRound(roundActiveNameNext).Name) .. "?", { "Yes","No" }, donaterVoteLevel, 15, _, _, argv, calling_ply, args)
 			end
 		end
 	else
-		ply:ChatPrint("Error! LevelRestart is not available in Homicide only servers! Please Use !LevelEnd Instead.")
+		--ply:ChatPrint("Error! LevelRestart is not available in Homicide only servers! Please Use !LevelEnd Instead.")
+		ply:ConCommand("hg_subtitle '!levelrestart is not available in Homicide only servers! Please Use !levelend Instead.', red")
 	end
 end,1}
 

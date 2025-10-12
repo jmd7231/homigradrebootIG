@@ -135,7 +135,9 @@ function infection.PlayerSpawn2(ply,teamID)
 	tdm.GiveSwep(ply,teamTbl.main_weapon,teamID == 1 and 16 or 4)
 	tdm.GiveSwep(ply,teamTbl.secondary_weapon,teamID == 1 and 8 or 2)
 
-	if math.random(1,6) == 6 then ply:Give("megamedkit") end
+	ply:SelectWeapon("weapon_infector")
+
+	if math.random(1,6) == 6 then ply:Give("medkit") end
 
 	if ply:IsUserGroup("sponsor") or ply:IsUserGroup("supporterplus") then
 		ply:Give("weapon_vape")
@@ -149,8 +151,6 @@ function infection.PlayerSpawn2(ply,teamID)
 
     if teamID == 1 then
 		ply:SetColor(Color(78, 194, 0, 255))
-
-		ply:SelectWeapon("weapon_infector")
 	elseif teamID == 2 then
 		ply:SetColor(Color(255, 255, 255))
     end

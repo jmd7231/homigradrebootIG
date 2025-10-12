@@ -144,6 +144,12 @@ function SWEP:DealDamage() -- dont deal damage, just change thier pm and role
 
 			turningPly:SetHealth(150)
 			turningPly:SetMaxHealth(150)
+			turningPly:SetWalkSpeed(250)
+			turningPly:SetRunSpeed(450)
+
+			turningPly.adrenaline = 0
+
+			turningPly.adrenaline = turningPly.adrenaline + 2
 
 			turningPly:SetColor(Color(78, 194, 0, 255))
 
