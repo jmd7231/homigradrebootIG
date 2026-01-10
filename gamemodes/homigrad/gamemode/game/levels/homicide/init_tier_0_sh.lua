@@ -13,7 +13,7 @@ homicide.teamEncoder = {
 homicide.RoundRandomDefalut = 6
 
 -- near the top, add a shared constant:
-homicide.PREP_TIME = homicide.PREP_TIME or 20
+homicide.PREP_TIME = homicide.PREP_TIME or 5
 
 
 local playsound = false
