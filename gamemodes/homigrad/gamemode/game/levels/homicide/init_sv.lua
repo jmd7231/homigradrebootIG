@@ -3,7 +3,7 @@ include("../../playermodelmanager_sv.lua")
 
 
 -- >>> ADD NEAR TOP-LEVEL (once) <<<
-homicide.PREP_TIME   = homicide.PREP_TIME or 20
+homicide.PREP_TIME   = homicide.PREP_TIME or 5
 homicide.inPrep      = false
 homicide.prepEndTime = 0
 
