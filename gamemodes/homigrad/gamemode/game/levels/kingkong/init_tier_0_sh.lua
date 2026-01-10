@@ -1,4 +1,4 @@
---table.insert(LevelList,"kingkong")
+table.insert(LevelList,"kingkong")
 kingkong = kingkong or {}
 kingkong.Name = "KingKong"
 
