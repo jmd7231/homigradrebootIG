@@ -23,7 +23,7 @@ function zombie.HUDPaint_RoundLeft(white2,time)
     if startRound > 0 and lply:Alive() then
         if playsound then
             playsound = false
-            --surface.PlaySound("snd_jack_hmcd_disaster.mp3") Nope!
+            surface.PlaySound("snd_jack_hmcd_disaster.mp3")
         end
         lply:ScreenFade(SCREENFADE.IN,Color(0,0,0,220),0.5,4)
 
@@ -71,7 +71,7 @@ function zombie.HUDPaint_RoundLeft(white2,time)
 
 			--draw.SimpleText("Click Tab to see it again.","HomigradFont",ScrW() / 2,ScrH() - 100,white2,TEXT_ALIGN_CENTER)
 		else
-			draw.SimpleText("If you're seeing this, please ask the admins to spawn escape points!","HomigradFont",ScrW() / 2,ScrH() - 100,white2,TEXT_ALIGN_CENTER)
+			draw.SimpleText("If you're seeing this, please ask Nicky to grow a ballsack and also spawn exit points please!","HomigradFont",ScrW() / 2,ScrH() - 100,white2,TEXT_ALIGN_CENTER)
 		end
 	end
 end
