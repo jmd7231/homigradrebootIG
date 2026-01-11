@@ -561,7 +561,7 @@ function homicide.GuiltLogic(ply,att,dmgInfo)
 end
 
 
-[
+--[[
 local function AllowRoleTTraitorButtons(ply, ent)
     if not IsValid(ply) then return end
 
@@ -579,4 +579,4 @@ end
 
 -- Vanilla TTT
 hook.Add("TTTCanUseTraitorButton", "Homicide_RoleT_TraitorButtons", AllowRoleTTraitorButtons)
-]
+]]
