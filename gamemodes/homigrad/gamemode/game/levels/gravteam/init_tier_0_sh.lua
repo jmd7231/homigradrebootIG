@@ -1,23 +1,22 @@
---table.insert(LevelList,"gravteam")
+table.insert(LevelList,"gravteam")
 gravteam = {}
-gravteam.Name = "Gravity Gun Gambit (TDM)"
+gravteam.Name = "War of the Servers"
 
 local models = {}
-for i = 1,9 do table.insert(models,"models/player/group03/male_0" .. i .. ".mdl") end
 
-gravteam.red = {"Resistance",Color(125,95,60),
+gravteam.red = {"GMod Players",Color(1,166,255),
 	weapons = {"weapon_hands","weapon_physcannon","weapon_hg_shovel","medkit","med_band_big"},
 	--main_weapon = {"weapon_sar2","weapon_spas12","weapon_akm","weapon_mp7"},
 	--secondary_weapon = {"weapon_hk_usp","weapon_p220"},
-	models = models
+	models = tdm.models
 }
 
 
-gravteam.blue = {"Combine",Color(75,75,125),
+gravteam.blue = {"Mingebags",Color(255,255,255),
 	weapons = {"weapon_hands","weapon_physcannon","weapon_hg_shovel","medkit","med_band_big"},
 	--main_weapon = {"weapon_sar2","weapon_spas12","weapon_mp7"},
 	--secondary_weapon = {"weapon_hk_usp"},
-	models = {"models/player/combine_soldier.mdl"}
+	models = {"models/player/kleiner.mdl"}
 }
 
 gravteam.teamEncoder = {
