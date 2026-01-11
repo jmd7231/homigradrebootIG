@@ -45,8 +45,8 @@ function css.HUDPaint_RoundLeft(white2) --позиции точек и счёт
     if startRound > 0 and lply:Alive() then
         lply:ScreenFade(SCREENFADE.IN,Color(0,0,0,220),0.5,4)
         draw.DrawText( "You are on team: " .. name, "HomigradFontBig", ScrW() / 2, ScrH() / 2, Color( color.r,color.g,color.b,math.Clamp(startRound,0,1) * 255 ), TEXT_ALIGN_CENTER )
-        draw.DrawText( "Захват точек", "HomigradFontBig", ScrW() / 2, ScrH() / 8, Color( 155,55,155,math.Clamp(startRound,0,1) * 255 ), TEXT_ALIGN_CENTER )
-        draw.DrawText( "Захватите точки, наберайте очки для победы", "HomigradFontBig", ScrW() / 2, ScrH() / 1.2, Color( 155,155,155,math.Clamp(startRound,0,1) * 255 ), TEXT_ALIGN_CENTER )
+        draw.DrawText( "Capture points!", "HomigradFontBig", ScrW() / 2, ScrH() / 8, Color( 155,55,155,math.Clamp(startRound,0,1) * 255 ), TEXT_ALIGN_CENTER )
+        draw.DrawText( "Capture and kill the enemy to win!", "HomigradFontBig", ScrW() / 2, ScrH() / 1.2, Color( 155,155,155,math.Clamp(startRound,0,1) * 255 ), TEXT_ALIGN_CENTER )
         return
     end
 
@@ -83,7 +83,7 @@ function css.HUDPaint_RoundLeft(white2) --позиции точек и счёт
     --время раунда
     local time = math.Round(roundTimeStart + roundTime - CurTime())
     local ftime = string.FormattedTime( time, "%02i:%02i" )
-	if time < 0 then ftime = "Иди нахуй" end
+	if time < 0 then ftime = "Suck a cock!" end
 
 	draw.SimpleText(ftime,"HomigradFont",ScrW()/2,ScrH()-25,white,TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 
@@ -91,5 +91,5 @@ function css.HUDPaint_RoundLeft(white2) --позиции точек и счёт
     
     local time2 = math.Round(respawntime + 60 - CurTime(),0)
     local ftime2 = string.FormattedTime( time2, "%02i:%02i" )
-    draw.SimpleText("Время до респавна: " .. ftime2,"HomigradFont",ScrW()/2,ScrH()-55,white,TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+    draw.SimpleText("Time until respawn: " .. ftime2,"HomigradFont",ScrW()/2,ScrH()-55,white,TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 end
