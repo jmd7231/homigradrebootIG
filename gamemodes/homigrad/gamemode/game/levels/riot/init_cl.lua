@@ -3,6 +3,7 @@ riot.GetTeamName = tdm.GetTeamName
 local playsound = false
 local bhop
 function riot.StartRoundCL()
+      playsound = true
 end
 
 
@@ -13,6 +14,7 @@ function riot.HUDPaint_RoundLeft(white)
 	local startRound = roundTimeStart + 5 - CurTime()
     if startRound > 0 and lply:Alive() then
         if playsound then
+		surface.PlaySound("snd_jack_hmcd_panic.mp3")
         end
         lply:ScreenFade(SCREENFADE.IN,Color(0,0,0,220),0.5,4)
         draw.DrawText( "You are on team: " .. name, "HomigradFontBig", ScrW() / 2, ScrH() / 2, Color( color.r,color.g,color.b,math.Clamp(startRound,0,1) * 255 ), TEXT_ALIGN_CENTER )
