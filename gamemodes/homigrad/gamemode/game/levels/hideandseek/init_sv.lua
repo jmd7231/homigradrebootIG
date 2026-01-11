@@ -60,13 +60,13 @@ function hideandseek.StartRoundSV(data)
 				if pos then seeker:SetPos(pos) end
 				seeker:SetNWBool("SeekerBlind", false)
 				seeker:ScreenFade(SCREENFADE.PURGE, Color(0, 0, 0, 0), 1, 0)
-				seeker:ConCommand("hg_subtitle 'Go! Hunt down those Hiders!', green")
+				seeker:ConCommand("hg_subtitle 'Go! Hunt down those guys!', green")
 			end
 		end
 
 		for _, ply in ipairs(team.GetPlayers(2)) do
 			if IsValid(ply) then
-				ply:ConCommand("hg_subtitle 'The seekers are now released! Run Or Hide!', red")
+				ply:ConCommand("hg_subtitle 'The shooters are now released! Run Or Hide!', red")
 			end
 		end
 	end)
@@ -91,7 +91,7 @@ function hideandseek.RoundEndCheck()
 		spawnsCT = tdm.SpawnsTwoCommand()
 		if not hideandseek.police then
 			hideandseek.police = true
-			PrintMessage(3,"Special Forces have arrived! Hiders can now escape through select points on the map.")
+			PrintMessage(3,"Special Forces have arrived! Bystanders can now escape through the marked exits.")
 
 			local aviable = ReadDataMap("spawnpointsct")
 
@@ -132,7 +132,7 @@ function hideandseek.RoundEndCheck()
 
 					CTExit = CTExit + 1
 
-					PrintMessage(3,ply:GetName().." has escaped! "..(CTAlive - 1) .. " hiders remain.")
+					PrintMessage(3,ply:GetName().." has escaped! "..(CTAlive - 1) .. " bystanders remain.")
 				end
 			end
 		end
