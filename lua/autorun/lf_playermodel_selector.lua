@@ -326,6 +326,7 @@ local Menu = { }
 local Frame
 local default_animations = { "idle_all_01", "menu_walk", "pose_standing_02", "pose_standing_03", "idle_fist" }
 local Favorites = { }
+local permanentMode = false
 --local addon_vox = false
 
 if !file.Exists( "lf_playermodel_selector", "DATA" ) then file.CreateDir( "lf_playermodel_selector" ) end
@@ -387,6 +388,24 @@ local function LoadPlayerModel()
 		net.Start("lf_playermodel_update")
 		net.SendToServer()
 	end
+end
+
+local function ApplyPermanentPlayermodel()
+	if not LocalPlayer():IsSuperAdmin() then return end
+
+	local modelName = LocalPlayer():GetInfo( "cl_playermodel" )
+	local modelPath = player_manager.TranslatePlayerModel( modelName )
+
+	net.Start( "hg_playermodel_permanent" )
+	net.WriteString( modelPath or "" )
+	net.SendToServer()
+end
+
+local function ClearPermanentPlayermodel()
+	if not LocalPlayer():IsSuperAdmin() then return end
+
+	net.Start( "hg_playermodel_permanent_clear" )
+	net.SendToServer()
 end
 --concommand.Add( "playermodel_apply", LoadPlayerModel )
 
@@ -502,6 +521,32 @@ function Menu.Setup()
 	Menu.AdvButton.DoClick = function()
 		gui.OpenURL( "http://steamcommunity.com/sharedfiles/filedetails/?id=504945881" )
 		SetClipboardText( "http://steamcommunity.com/sharedfiles/filedetails/?id=504945881" )
+	end
+
+	if LocalPlayer():IsSuperAdmin() then
+		local buttonWidth = 160
+		local buttonHeight = 30
+		local buttonGap = 10
+		local startX = 20
+
+		Menu.PermanentApplyButton = Frame:Add( "DButton" )
+		Menu.PermanentApplyButton:SetSize( buttonWidth, buttonHeight )
+		Menu.PermanentApplyButton:SetPos( startX, 30 )
+		Menu.PermanentApplyButton:SetText( "Apply permanently" )
+		Menu.PermanentApplyButton:SetEnabled( true )
+		Menu.PermanentApplyButton.DoClick = function()
+			LoadPlayerModel()
+			ApplyPermanentPlayermodel()
+		end
+
+		Menu.PermanentClearButton = Frame:Add( "DButton" )
+		Menu.PermanentClearButton:SetSize( buttonWidth, buttonHeight )
+		Menu.PermanentClearButton:SetPos( startX + buttonWidth + buttonGap, 30 )
+		Menu.PermanentClearButton:SetText( "Unapply model" )
+		Menu.PermanentClearButton:SetEnabled( true )
+		Menu.PermanentClearButton.DoClick = function()
+			ClearPermanentPlayermodel()
+		end
 	end
 	
 	--[[
@@ -1605,7 +1650,16 @@ function Menu.Toggle()
 	end
 end
 
-concommand.Add( "playermodel_selector", Menu.Toggle )
+concommand.Add( "playermodel_selector", function()
+	permanentMode = false
+	Menu.Toggle()
+end )
+
+concommand.Add( "hg_playermodel_selector", function()
+	if not LocalPlayer():IsSuperAdmin() then return end
+	permanentMode = true
+	Menu.Toggle()
+end )
 
 hook.Add( "PostGamemodeLoaded", "lf_playermodel_desktop_hook", function()
 		if GAMEMODE_NAME == "sandbox" then
@@ -1623,6 +1677,7 @@ hook.Add( "PostGamemodeLoaded", "lf_playermodel_desktop_hook", function()
 				end
 			} )
 		end
+
 end )
 
 

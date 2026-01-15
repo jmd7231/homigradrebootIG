@@ -2,6 +2,7 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 
 include("shared.lua")
+include("game/playermodelmanager_sv.lua")
 
 util.AddNetworkString("remove_jmod_effects")
 
@@ -100,6 +101,10 @@ function GM:PlayerSpawn(ply)
 	end
 
 	TableRound().PlayerSpawn2(ply,ply:Team())
+
+	if HG_ApplyPermanentPlayermodel then
+		HG_ApplyPermanentPlayermodel(ply)
+	end
 	
 	RunConsoleCommand("hg_usecustommodel","false")
 end
