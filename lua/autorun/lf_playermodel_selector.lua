@@ -527,16 +527,14 @@ function Menu.Setup()
 		local buttonWidth = 160
 		local buttonHeight = 30
 		local buttonGap = 10
-		local totalWidth = (buttonWidth * 2) + buttonGap
-		local startX = (fw - totalWidth) / 2
+		local startX = 20
 
 		Menu.PermanentApplyButton = Frame:Add( "DButton" )
 		Menu.PermanentApplyButton:SetSize( buttonWidth, buttonHeight )
 		Menu.PermanentApplyButton:SetPos( startX, 30 )
 		Menu.PermanentApplyButton:SetText( "Apply permanently" )
-		Menu.PermanentApplyButton:SetEnabled( permanentMode )
+		Menu.PermanentApplyButton:SetEnabled( true )
 		Menu.PermanentApplyButton.DoClick = function()
-			if not permanentMode then return end
 			LoadPlayerModel()
 			ApplyPermanentPlayermodel()
 		end
@@ -1680,14 +1678,6 @@ hook.Add( "PostGamemodeLoaded", "lf_playermodel_desktop_hook", function()
 			} )
 		end
 
-		list.Set( "DesktopWindows", "EnhancedPlayerModel", {
-			title		= "Enhanced PM",
-			icon		= "icon64/playermodel.png",
-			init		= function( icon, window )
-				window:Remove()
-				RunConsoleCommand( "hg_playermodel_selector" )
-			end
-		} )
 end )
 
 
