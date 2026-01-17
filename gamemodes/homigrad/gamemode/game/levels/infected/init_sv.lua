@@ -147,5 +147,14 @@ function infected.PlayerCanJoinTeam(ply,teamID)
 end
 
 function infected.PlayerDeath(ply,inf,att)
+    if ply:Team() == 1 then
+        timer.Simple(2, function()
+            if not roundActive or TableRound() ~= infected then return end
+            if not IsValid(ply) or ply:Alive() then return end
+
+            ply:Spawn()
+        end)
+    end
+
     return false
 end
