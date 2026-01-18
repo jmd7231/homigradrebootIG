@@ -26,6 +26,14 @@ else
         playsound = true
     end)
 
+    net.Receive("homicide_self_role", function()
+        local role = net.ReadString()
+        local lply = LocalPlayer()
+        if not IsValid(lply) then return end
+        lply.roleT = role == "traitor"
+        lply.roleCT = role == "ct"
+    end)
+
     local supportArrivalTime = 0
 
     net.Receive("homicide_support_arrival", function()
