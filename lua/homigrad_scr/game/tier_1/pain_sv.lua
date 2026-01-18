@@ -37,12 +37,12 @@ if engine.ActiveGamemode() == "homigrad" then
             if dmginfo:GetAttacker():IsRagdoll() then dmg = 0 end
             dmginfo:SetDamage(dmginfo:GetDamage())
 
-            if ply.painlosing > 10 or ply.pain > 500 + ply:GetNWInt("SharpenAMT") * 5 or ply.Blood < 3000 and not ply.unconscious then
+            if ply.painlosing > 14 or ply.pain > 650 + ply:GetNWInt("SharpenAMT") * 5 or ply.Blood < 2500 and not ply.unconscious then
                 ply.gotuncon = true
             end
 
             // Compared to above, this probably won't be as effective, but whatever.
-            if ply.pain > 500 + ply:GetNWInt("SharpenAMT") * 5 and not ply.unconscious then
+            if ply.pain > 650 + ply:GetNWInt("SharpenAMT") * 5 and not ply.unconscious then
                 ply:SetNWBool("fake",IsValid(ply.FakeRagdoll))
             end
         end
@@ -116,7 +116,7 @@ if engine.ActiveGamemode() == "homigrad" then
     end)
 
     function IsUnconscious(ply)
-        if ply.painlosing > 20 or ply.pain > 500 + ply:GetNWInt("SharpenAMT") * 5 or ply.Blood < 3000 or ply.heartstop then
+        if ply.painlosing > 25 or ply.pain > 650 + ply:GetNWInt("SharpenAMT") * 5 or ply.Blood < 2500 or ply.heartstop then
             ply.unconscious = true
             ply:SetDSP(16)
         else

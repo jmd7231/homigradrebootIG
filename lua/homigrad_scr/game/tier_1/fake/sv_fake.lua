@@ -587,6 +587,9 @@ end
 local CustomWeight = {
 	["models/player/police_fem.mdl"] = 65,
 	["models/player/police.mdl"] = 65,
+	["models/player/group03/police.mdl"] = 65,
+	["models/player/group03/police_fem.mdl"] = 65,
+	["models/player/group03m/police.mdl"] = 65,
 	["models/player/Rusty/NatGuard/male_01.mdl"] = 90,
 	["models/player/Rusty/NatGuard/male_02.mdl"] = 90,
 	["models/player/Rusty/NatGuard/male_03.mdl"] = 90,
@@ -604,21 +607,7 @@ local CustomWeight = {
 	["models/ats/mgs2snake/mgs2snake.mdl"] = 20
 }
 
-for i = 1,6 do
-	CustomWeight["models/monolithservers/mpd/female_0"..i..".mdl"] = 20
-end
-
-for i = 1,6 do
-	CustomWeight["models/monolithservers/mpd/female_0"..i.."_2.mdl"] = 20
-end
-
-for i = 1,6 do
-	CustomWeight["models/monolithservers/mpd/male_0"..i..".mdl"] = 20
-end
-
-for i = 1,6 do
-	CustomWeight["models/monolithservers/mpd/male_0"..i.."_2.mdl"] = 20
-end
+-- Civil protection weights are handled via the group03 entries above.
 
 
 util.AddNetworkString("custom name")
