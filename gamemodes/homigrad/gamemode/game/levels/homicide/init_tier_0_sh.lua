@@ -135,7 +135,11 @@ local DescCT = {
 }
 
 local DescTraitor = {
-    [1] = "Leave no man standing other than your own.",
+    [1] = "You have a silenced USP with two magazines.",
+    [2] = "You have a silenced USP with two magazines.",
+    [3] = "You have a crossbow with a handful of bolts.",
+    [4] = "You have a Mateba with a few extra rounds.",
+    [5] = "You have a Scout or Barrett with extra ammo.",
 }
 
 local DescInnocent = "Work together to find the traitors among you."
