@@ -410,7 +410,11 @@ function homicide.StartRoundSV()
                     ply:Give("weapon_hands")
                 end
                 if ply:HasWeapon("weapon_hands") then
-                    ply:SelectWeapon("weapon_hands")
+                    timer.Simple(0, function()
+                        if IsValid(ply) and ply:HasWeapon("weapon_hands") then
+                            ply:SelectWeapon("weapon_hands")
+                        end
+                    end)
                 end
                 if ply._giveVapeAfterPrep then
                     ply._giveVapeAfterPrep = nil

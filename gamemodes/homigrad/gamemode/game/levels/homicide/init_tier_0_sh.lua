@@ -32,6 +32,7 @@ else
         if not IsValid(lply) then return end
         lply.roleT = role == "traitor"
         lply.roleCT = role == "ct"
+        homicide.roleReady = true
     end)
 
     local supportArrivalTime = 0
@@ -79,6 +80,7 @@ function homicide.StartRound(data)
             ply.roleCT = false
             ply.countKick = 0
         end
+        homicide.roleReady = false
         roundTimeLoot = data.roundTimeLoot
         return
     end
@@ -155,7 +157,7 @@ function homicide.HUDPaint_RoundLeft(white2)
         roundUIShown = false
     else
         -- Prep is over: now (and only now) show the role intro once.
-        if playsound and not roundUIShown and lply:Alive() then
+        if playsound and not roundUIShown and lply:Alive() and homicide.roleReady then
             playsound = false
             roundUIShown = true
 
