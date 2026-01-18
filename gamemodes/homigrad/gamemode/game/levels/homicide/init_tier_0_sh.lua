@@ -26,6 +26,15 @@ else
         playsound = true
     end)
 
+    net.Receive("homicide_self_role", function()
+        local role = net.ReadString()
+        local lply = LocalPlayer()
+        if not IsValid(lply) then return end
+        lply.roleT = role == "traitor"
+        lply.roleCT = role == "ct"
+        homicide.roleReady = true
+    end)
+
     local supportArrivalTime = 0
 
     net.Receive("homicide_support_arrival", function()
@@ -71,6 +80,7 @@ function homicide.StartRound(data)
             ply.roleCT = false
             ply.countKick = 0
         end
+        homicide.roleReady = false
         roundTimeLoot = data.roundTimeLoot
         return
     end
@@ -125,7 +135,11 @@ local DescCT = {
 }
 
 local DescTraitor = {
-    [1] = "Leave no man standing other than your own.",
+    [1] = "You have a silenced USP with two magazines.",
+    [2] = "You have a silenced USP with two magazines.",
+    [3] = "You have a crossbow with a handful of bolts.",
+    [4] = "You have a Mateba with a few extra rounds.",
+    [5] = "You have a Scout or Barrett with extra ammo.",
 }
 
 local DescInnocent = "Work together to find the traitors among you."
@@ -147,7 +161,7 @@ function homicide.HUDPaint_RoundLeft(white2)
         roundUIShown = false
     else
         -- Prep is over: now (and only now) show the role intro once.
-        if playsound and not roundUIShown and lply:Alive() then
+        if playsound and not roundUIShown and lply:Alive() and homicide.roleReady then
             playsound = false
             roundUIShown = true
 

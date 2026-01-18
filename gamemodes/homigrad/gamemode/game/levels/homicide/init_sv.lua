@@ -84,6 +84,9 @@ local function makeT(ply)
     timer.Simple(5,function() ply.allowFlashlights = true end)
 
     AddNotificate( ply,"You are a traitor.")
+    net.Start("homicide_self_role")
+    net.WriteString("traitor")
+    net.Send(ply)
 
     if #GetFriends(ply) >= 1 then
         timer.Simple(1,function() AddNotificate( ply,"Your Traitor Buddies are" .. GetFriends(ply)) end)
@@ -117,6 +120,10 @@ local function makeCT(ply)
         --AddNotificate( ply,"#rounds.innocentWildWest")
     else
     end
+
+    net.Start("homicide_self_role")
+    net.WriteString("ct")
+    net.Send(ply)
 end
 
 COMMANDS.russian_roulette = {function(ply,args)
@@ -160,6 +167,7 @@ sound.Add({
 local prePolicePlayers = {}
 
 util.AddNetworkString("homicide_support_arrival")
+util.AddNetworkString("homicide_self_role")
 
 function NotifySupportArrival(ply, arrivalTime)
     net.Start("homicide_support_arrival")
@@ -400,6 +408,13 @@ function homicide.StartRoundSV()
             if IsValid(ply) then
                 if not ply:HasWeapon("weapon_hands") then
                     ply:Give("weapon_hands")
+                end
+                if ply:HasWeapon("weapon_hands") then
+                    timer.Simple(0, function()
+                        if IsValid(ply) and ply:HasWeapon("weapon_hands") then
+                            ply:SelectWeapon("weapon_hands")
+                        end
+                    end)
                 end
                 if ply._giveVapeAfterPrep then
                     ply._giveVapeAfterPrep = nil
