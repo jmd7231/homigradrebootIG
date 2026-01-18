@@ -1,10 +1,10 @@
 -- Time in seconds until the mapvote is over from
 -- when it starts.
-SolidMapVote["Config"]["Length"] = 25
+SolidMapVote["Config"]["Length"] = 10
 
 -- The time in seconds that the vote will stay on the screen
 -- after the winning map has been chosen.
-SolidMapVote["Config"]["Post Vote Length"] = 5
+SolidMapVote["Config"]["Post Vote Length"] = 3
 
 -- This option controls the size of the map vote buttons.
 -- This will effect how the images look. If your switching from tall to
@@ -12,7 +12,7 @@ SolidMapVote["Config"]["Post Vote Length"] = 5
 -- need to get some new pictures because up scaling small images up looks like butt.
 -- 1 = Tall and skinny vote buttons
 -- 2 = Square vote buttons
-SolidMapVote["Config"]["Map Button Size"] = 1.0
+SolidMapVote["Config"]["Map Button Size"] = 2
 
 -- This option allows you to set a time for when the map vote will
 -- appear after. The first option must be set to true, then the second
@@ -80,7 +80,7 @@ end
 -- Enabling this option will give greater a chance to maps
 -- that are played less often to be selected in the vote.
 -- Disabling it will let the map vote randomly choose maps for the vote.
-SolidMapVote["Config"]["Fair Map Recycling"] = true
+SolidMapVote["Config"]["Fair Map Recycling"] = false
 
 -- Setting this to true will display on the map vote button how many
 -- times the map was played in the past.
@@ -91,55 +91,51 @@ SolidMapVote["Config"]["Show Map Play Count"] = true
 -- be able to be chosen for the vote.
 SolidMapVote["Config"]["Manual Map Pool"] = true
 SolidMapVote["Config"]["Map Pool"] = {
-	"cs_insertion2_dusk",
-	"cs_office-unlimited",
-	"freeway_thicc_v3",
-	"gm_abandoned_factory",
-	"gm_apartments_hl2",
-	"cs_assault",
-	"gm_csgoagency",
-	"ttt_winter_v4",
-	"gm_hmcd_rooftops",
-	"ttt_theship_v1_32s",
-	"gm_paradise_resort",
-	"gm_wick",
-	"mu_smallotown_v2_13",
-	"ge_caverns_fix",
+	"gm_crazyrooms",
+	"gm_cs_office_ext",
+	"gm_csgorialto",
+	"gm_deschool",
+	"gm_apartments_night",
+	"gm_asylum",
+	"gm_building_v2",
+	"gm_funkis_night",
+	"gm_house3v4improvednight",
+	"gm_marquisclean",
+	"gm_militia_big",
+	"gm_wick_night",
+	"gm_sentimental98v1dusk",
 	"ttt_airbus_b3",
-	"ttt_amsterville_open",
+	"ttt_bank_change",
 	"ttt_diescraper",
 	"ttt_clue_2022",
-	"ttt_fastfood_a6",
+	"zgr_fastfood_a6",
 	"ttt_grovestreet_los",
-	"ttt_drugbust",
-	"ttt_minecraft_b5_fish_n_ships",
-	"ttt_minecraftcity_v5",
+	"ttt_hangar",
+	"ttt_plaza_b7",
+	"ttt_santamariabeach",
 	"ttt_terrortrain_2020_b5",
-	"zavod",
-    "ttt_waterworld_lite",
-    "ttt_plaza_b6_ccf",
-    "slash_selvage",
-    "gm_asylum",
-    "ph_scotch",
+	"ttt_surface",
+    "ttt_rooftops_2016_v1",
+    "ttt_cornershop",
+    "ttt_depot_fof",
+    "ttt_glacier",
+    "ttt_hazard",
     "mu_powerhermit",
-    "ttt_bank_change",
-    "gm_building_v2",
-	"gm_deschool",
-	"zs_last_mansion_v3",
-	"ttt_blackmesa_bahpu",
-	"ttt_community_skating_v2a",
-	"ttt_cripplecreek",
-	"ttt_scream_v1n",
-	"cs_militia",
+    "ttt_richland_remix_v1",
+    "ttt_scream_v1n",
+	"zs_abandonedmall_2025_v5a",
+	"zs_adrift_v4",
+	"rp_countryestatev1",
+	"ttt_a_grassy_place",
+	"freeway_thicc_v3_night",
+	"hmcd_govnova_reborn",
+	"mu_smallotown_v2_13",
 	"ttt_warhawk_g2",
-	"ttt_countdown_b1",
-	"gm_ridgemont",
-	"gm_sentimental98v1",
-	"ttt_lookatthatview",
-	"ttt_richland_remix_v1",
-	"ttt_5c_plaza",
-	"ttt_mcisland_b1",
-	"ttt_palace_v1",
+	"mu_smallotown_v2_13_night",
+	"sm_manhattanmegamallnightv1",
+	"gm_snowyisolation_v2",
+	"ttt_vegas_casino",
+
 
 
 	-- "ttt_freeway_rain",
@@ -160,7 +156,7 @@ SolidMapVote["Config"]["Construct Map Pool"] = {"gm_construct", "gm_flatgrass", 
 SolidMapVote["Config"]["Enable Voice"] = true
 
 -- Allow players to use the chat box while in the mapvote
-SolidMapVote["Config"]["Enable Chat"] = false
+SolidMapVote["Config"]["Enable Chat"] = true
 
 -- Here you can specify what players can force the mapvote to appear.
 SolidMapVote["Config"]["Force Vote Permission"] = function(ply) return ply:IsAdmin() end
@@ -210,7 +206,7 @@ SolidMapVote["Config"]["Enable Random"] = true
 -- This option controls how the random button works
 -- 1 = Random map will be selected from the maps on the vote menu
 -- 2 = Random map will be selected from the entire map pool
-SolidMapVote["Config"]["Random Mode"] = 1
+SolidMapVote["Config"]["Random Mode"] = 2
 SolidMapVote["Config"]["Random Image"] = "http://i.imgur.com/oqeqWhl.png"
 
 -- This is the image for maps that are missing an image
@@ -224,44 +220,44 @@ SolidMapVote["Config"]["Missing Image Size"] = {
 -- appealing on the mapvote.
 SolidMapVote["Config"]["Specific Maps"] = {
 	{
-		filename = "ttt_minecraft_b5_fish_n_ships",
-		displayname = "Minecraft B5",
-		image = "https://i.imgur.com/u2pFlcs.jpeg",
+		filename = "gm_crazyrooms",
+		displayname = "Crazy Wacky Rooms",
+		image = "https://i.imgur.com/a0CaqCQ.jpeg",
 		width = 1920,
 		height = 1080
 	},
 	{
-		filename = "gm_wick",
-		displayname = "Wick's House",
-		image = "https://i.imgur.com/qPwmEke.jpeg",
+		filename = "gm_wick_night",
+		displayname = "Wick's House (Night)",
+		image = "https://i.imgur.com/z3OThAT.jpeg",
 		width = 1920,
 		height = 1080
 	},
 	{
-		filename = "ttt_blackmesa_bahpu",
-		displayname = "Black Mesa",
-		image = "https://i.imgur.com/v0zYPia.jpeg",
+		filename = "gm_csgorialto",
+		displayname = "Rialto",
+		image = "https://i.imgur.com/Q94xFc1.jpeg",
 		width = 1920,
 		height = 1080
-	},
-	{
-		filename = "mu_smallotown_v2_snow",
-		displayname = "Small Town (Snow)",
-		image = "https://i.imgur.com/xquWM5T.jpeg",
-		width = 1920,
-		height = 1080
-	},
-	{
-		filename = "gm_csgoagency",
-                displayname = "Agency",
-                image = "https://i.imgur.com/jOlJpVb.jpeg",
-                width = 1920,
-                height = 1080
 	},
 	{
 		filename = "gm_deschool",
 		displayname = "School",
-		image = "https://i.imgur.com/JoPG7Wm.jpeg",
+		image = "https://i.imgur.com/JBYkXt9.jpeg",
+		width = 1920,
+		height = 1080
+	},
+	{
+		filename = "gm_apartments_night",
+                displayname = "Night Time Apartments",
+                image = "https://i.imgur.com/VcX1qCO.jpeg",
+                width = 1920,
+                height = 1080
+	},
+	{
+		filename = "gm_asylum",
+		displayname = "Asylum Center",
+		image = "https://i.imgur.com/P9rZTAK.jpeg",
 		width = 1920,
 		height = 1080
 	},
@@ -273,121 +269,121 @@ SolidMapVote["Config"]["Specific Maps"] = {
 		height = 1080
 	},
 	{
-		filename = "cs_militia",
-		displayname = "Milita Base",
-		image = "https://i.imgur.com/hGBVSnq.jpeg",
+		filename = "gm_militia_big",
+		displayname = "Milita Base (Bigger)",
+		image = "https://i.imgur.com/XLnXSHS.jpeg",
 		width = 1920,
 		height = 1080
 	},
 	{
-		filename = "ttt_drugbust",
-		displayname = "Meth House",
-		image = "https://i.imgur.com/ao4GJpx.jpeg",
+		filename = "gm_building_v2",
+		displayname = "Building",
+		image = "https://i.imgur.com/IVEDrZ4.jpeg",
 		width = 1920,
 		height = 1080
 	},
 	{
-		filename = "ttt_fastfood_a6",
-		displayname = "Fastfood",
-		image = "https://i.imgur.com/AZmGWhd.jpeg",
+		filename = "zgr_fastfood_a6",
+		displayname = "Fastfood (Dusk)",
+		image = "https://i.imgur.com/onsAAdx.jpeg",
 		width = 1920,
 		height = 1080
 	},
 	{
-		filename = "ttt_clue_xmas",
-		displayname = "Clue (Christmas)",
-		image = "materials/levels/minecraftb5.jpg",
+		filename = "gm_funkis_night",
+		displayname = "90's Modern House",
+		image = "https://i.imgur.com/WvbIMQn.jpeg",
 		width = 1920,
 		height = 1080
 	},
 	{
-		filename = "ttt_minecraftcity_v5",
-		displayname = "Minecraft City",
-		image = "https://i.imgur.com/LGlZOMT.jpeg",
+		filename = "gm_house3v4improvednight",
+		displayname = "3v4 House (Night)",
+		image = "https://i.imgur.com/ne4O0Wz.jpeg",
 		width = 1920,
 		height = 1080
 	},
 	{
-		filename = "ttt_theship_v1_32s",
-                displayname = "Ship",
-                image = "https://i.imgur.com/8sKotVT.jpeg",
+		filename = "gm_marquisclean",
+                displayname = "Paris",
+                image = "https://i.imgur.com/XTn1ppK.jpeg",
                 width = 1920,
                 height = 1080 
 	},
 	{
 		filename = "ttt_diescraper",
 		displayname = "Skyscraper",
-		image = "https://i.imgur.com/I6Kvh9U.jpeg",
+		image = "https://i.imgur.com/zeSWoVj.jpeg",
 		width = 1920,
 		height = 1080
 	},
 	{
-		filename = "ttt_waterworld_lite",
-                displayname = "Waterworld",
-                image = "https://i.imgur.com/CocAjp4.jpeg",
+		filename = "gm_sentimental98v1dusk",
+                displayname = "Sentimental (Dusk)",
+                image = "https://i.imgur.com/UDN6DYC.jpeg",
                 width = 1920,
                 height = 1080
 	},
 	{
-		filename = "slash_selvage",
-                displayname = "Selvage",
-                image = "https://i.imgur.com/2E6okNq.jpeg",
+		filename = "ttt_hangar",
+                displayname = "Hangar",
+                image = "https://i.imgur.com/ycFgmQz.jpeg",
                 width = 1920,
                 height = 1080	                                                                                                                                                                                                
 	},
 	{
-		filename = "gm_asylum",
-                displayname = "Asylum",
-                image = "https://i.imgur.com/ejCQ1ub.jpeg",
+		filename = "gm_cs_office_ext",
+                displayname = "Office (Extended)",
+                image = "https://i.imgur.com/eFALwO1.jpeg",
                 width = 1920,
                 height = 1080 
 	},
 	{
-		filename = "ttt_plaza_b6_ccf",
+		filename = "ttt_plaza_b7",
                 displayname = "Plaza",
-                image = "https://i.imgur.com/d3o7frt.jpeg",
+                image = "https://i.imgur.com/mErMDXR.jpeg",
                 width = 1920,
                 height = 1080
 	},
 	{
-		filename = "cs_office",
-		displayname = "Office",
-		image = "https://i.imgur.com/8kVbpdc.jpeg",
+		filename = "ttt_santamariabeach",
+		displayname = "Santa Maria Beach",
+		image = "https://i.imgur.com/JRHMGEG.jpeg",
 		width = 1920,
 		height = 1080
 	},
 	{
-		filename = "ttt_community_skating_v2a",
-		displayname = "Community Iceskating Rink",
-		image = "https://i.imgur.com/5N08KiU.jpeg",
+		filename = "ttt_surface",
+		displayname = "Russian Snow Town",
+		image = "https://i.imgur.com/nXoRcVP.jpeg",
 		width = 1920,
 		height = 1080
 	},
 	{
 		filename = "ttt_scream_v1n",
 		displayname = "Stu Matcher's House",
-		image = "https://i.imgur.com/H9oA0Zd.jpeg",
+		image = "https://i.imgur.com/Syc3ig1.jpeg",
 		width = 1920,
 		height = 1080
 	},
 	{
 		filename = "ttt_airbus_b3",
 		displayname = "Airbus",
-		image = "https://i.imgur.com/QZBCtOb.jpeg",
+		image = "https://i.imgur.com/G1UMeka.jpeg",
 		width = 1920,
 		height = 1080
 	},
 	{
 		filename = "ttt_grovestreet_los",
 		displayname = "Grove Street",
-		image = "https://i.imgur.com/1w3FxcH.jpeg",
+		image = "https://i.imgur.com/nEoUrL2.jpeg",
 		width = 1920,
 		height = 1080
 	},
 	{
-		filename = "ttt_cripplecreek",
-		displayname = "Cripple Creek",
-		image = "https://i.imgur.com/jSk5dbw.jpeg",
+		filename = "ttt_depot_fof",
+		displayname = "Depot",
+		image = "https://i.imgur.com/phuHyJO.jpeg",
 		width = 1920,
 		height = 1080
 	},
@@ -399,30 +395,30 @@ SolidMapVote["Config"]["Specific Maps"] = {
 		height = 1080
 	},
 	{
-		filename = "gm_abandoned_factory",
-		displayname = "Abandoned Factory",
-		image = "https://i.imgur.com/qa3zbOn.jpeg",
+		filename = "ttt_rooftops_2016_v1",
+		displayname = "2016 Rooftops",
+		image = "https://i.imgur.com/N2dVXxk.jpeg",
 		width = 1920,
 		height = 1080
 	},
 	{
-		filename = "cs_assault",
-		displayname = "Assault",
-		image = "https://i.imgur.com/l9uncGb.jpeg",
+		filename = "ttt_cornershop",
+		displayname = "Corner Shop",
+		image = "https://i.imgur.com/xORHy3l.jpeg",
 		width = 1920,
 		height = 1080
 	},
 	{
-		filename = "ttt_winter_v4",
-		displayname = "Nuclear Facility",
-		image = "https://i.imgur.com/AuIpqPu.jpeg",
+		filename = "ttt_glacier",
+		displayname = "Glacier Base",
+		image = "https://i.imgur.com/AtHKLT9.jpeg",
 		width = 1920,
 		height = 1080
 	},
 	{
-		filename = "gm_hmcd_rooftops",
-		displayname = "Rooftops",
-		image = "https://i.imgur.com/u88YPdE.jpeg",
+		filename = "ttt_hazard",
+		displayname = "Hazard Facility",
+		image = "https://i.imgur.com/TxoYzyT.jpeg",
 		width = 1920,
 		height = 1080
 	},
@@ -450,91 +446,91 @@ SolidMapVote["Config"]["Specific Maps"] = {
 	{
 		filename = "ttt_richland_remix_v1",
 		displayname = "Richland Estate",
-		image = "https://i.imgur.com/jWRB8pI.jpeg",
+		image = "https://i.imgur.com/kDbjN0G.jpeg",
 		width = 1920,
 		height = 1080
 	},
 	{
 		filename = "mu_smallotown_v2_13",
 		displayname = "Small Town (Day)",
-		image = "https://i.imgur.com/gYI8nD0.jpeg",
+		image = "https://i.imgur.com/xkkzlzQ.jpeg",
 		width = 1920,
 		height = 1080
 	},
 	{
-		filename = "gm_building_v2",
-		displayname = "Office Building",
-		image = "https://i.imgur.com/DIgrELg.jpeg",
+		filename = "ttt_vegas_casino",
+		displayname = "Vegas",
+		image = "https://i.imgur.com/50w29OK.jpeg",
 		width = 1920,
 		height = 1080
 	},
 	{
-		filename = "ttt_crisis_v1",
-		displayname = "Crisis",
-		image = "https://i.imgur.com/zG6kEob.jpeg",
+		filename = "hmcd_govnova_reborn",
+		displayname = "Govnova Bunker",
+		image = "https://i.imgur.com/Hsghqa7.jpeg",
 		width = 1920,
 		height = 1080
 	},
 	{
 		filename = "ttt_clue_2022",
 		displayname = "Clue",
-		image = "https://i.imgur.com/dHWDpkI.jpeg",
+		image = "https://i.imgur.com/yd9RMiV.jpeg",
 		width = 1920,
 		height = 1080
 	},
 	{
 		filename = "ttt_bank_change",
-		displayname = "Bank",
-		image = "https://i.imgur.com/aGJXyWJ.jpeg",
+		displayname = "Change Bank",
+		image = "https://i.imgur.com/wHYTnIY.jpeg",
 		width = 1920,
 		height = 1080
 	},
 	{
-		filename = "zs_last_mansion_v3",
-		displayname = "Old Mansion",
-		image = "https://i.imgur.com/x3f0nLU.jpeg",
+		filename = "mu_smallotown_v2_13_night",
+		displayname = "Small Town (Night)",
+		image = "https://i.imgur.com/pIeWWH5.jpeg",
 		width = 1920,
 		height = 1080
 	},
 	{
-		filename = "freeway_thicc_v3",
-		displayname = "Freeway",
-		image = "https://i.imgur.com/w9wUmsm.jpeg",
+		filename = "freeway_thicc_v3_night",
+		displayname = "Freeway (Night)",
+		image = "https://i.imgur.com/Ijhuy9h.jpeg",
 		width = 1920,
 		height = 1080
 	},
 	{
-		filename = "zavod",
-		displayname = "EFT Factory",
-		image = "https://i.imgur.com/0o19pTl.jpeg",
+		filename = "zs_abandonedmall_2025_v5a",
+		displayname = "Abandoned Mall",
+		image = "https://i.imgur.com/Y8b0nJG.jpeg",
 		width = 1920,
 		height = 1080
 	},
 	{
-		filename = "ttt_mcisland_b1",
-		displayname = "Minecraft Island",
-		image = "https://i.imgur.com/dVOm57G.jpeg",
+		filename = "ttt_a_grassy_place",
+		displayname = "Hunting Lodge",
+		image = "https://i.imgur.com/QFveRR7.jpeg",
 		width = 1920,
 		height = 1080
 	},
 	{
-		filename = "ttt_countdown_b1",
-		displayname = "Countdown",
-		image = "https://i.imgur.com/K0EVl8p.jpeg",
+		filename = "sm_manhattanmegamallnightv1",
+		displayname = "Not Abandoned Mall",
+		image = "https://i.imgur.com/hSaTZF3.jpeg",
 		width = 1920,
 		height = 1080
 	},
 	{
-		filename = "gm_apartments_hl2",
-		displayname = "Apartments",
-		image = "https://i.imgur.com/ldMdurt.jpeg",
+		filename = "zs_adrift_v4",
+		displayname = "Adrifted Island",
+		image = "https://i.imgur.com/Xa7TNI2.jpeg",
 		width = 1920,
 		height = 1080
 	},
 	{
-		filename = "ttt_lookatthatview",
-		displayname = "Israel Propaganda Control Center",
-		image = "https://i.imgur.com/hNNd7sm.jpeg",
+		filename = "rp_countryestatev1",
+		displayname = "Country Estate",
+		image = "https://i.imgur.com/oJREBFU.jpeg",
 		width = 1920,
 		height = 1080
 	},
@@ -546,9 +542,9 @@ SolidMapVote["Config"]["Specific Maps"] = {
 		height = 1080
 	},
 	{
-		filename = "ttt_5c_plaza",
-		displayname = "5 Cambie Plaza",
-		image = "https://i.imgur.com/rjisaC0.jpeg",
+		filename = "gm_snowyisolation_v2",
+		displayname = "Snowed Work Place",
+		image = "https://i.imgur.com/RAeoqp9.jpeg",
 		width = 1920,
 		height = 1080
 	},
