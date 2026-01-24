@@ -37,7 +37,7 @@ hook.Add("HUDPaint","PainEffect",function()
       
     local ply = LocalPlayer()
 
-    local isUnconscious = ply:GetNWBool("unconscious", ply:GetNWInt("unconscious") == 1)
+    local isUnconscious = ply:GetNWInt("unconscious", 0) ~= 0 or ply:GetNWBool("unconscious")
     if isUnconscious and ply:Alive() --[[and ply:Team() ~= TEAM_SPECTATOR ]]then
         --if ply:Team() ~= TEAM_SPECTATOR then
             draw.DrawText("You are currently unconscious.", "HomigradFontNotify", ScrW() / 2, ScrH() / 2.1,
