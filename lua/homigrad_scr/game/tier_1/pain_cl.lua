@@ -42,12 +42,13 @@ hook.Add("HUDPaint","PainEffect",function()
             draw.DrawText("You are currently unconscious.", "HomigradFontNotify", ScrW() / 2, ScrH() / 2.1,
             colwhite, TEXT_ALIGN_CENTER)
 
-        if pain and pain > 500 then
+        local unconsciousPainThreshold = 650 + (ply:GetNWInt("SharpenAMT") * 5)
+        if pain and pain > unconsciousPainThreshold then
             draw.DrawText("Assuming you're still in great shape, you'll be back up in " ..
-                math.floor(((pain - 500) / 20) + 1) .. " second(s)!", "HomigradFontSmall",
+                math.floor(((pain - unconsciousPainThreshold) / 20) + 1) .. " second(s)!", "HomigradFontSmall",
                 ScrW() / 2, ScrH() / 1.8,
                 colwhite, TEXT_ALIGN_CENTER)
-        elseif blood and blood < 3000 then
+        elseif blood and blood < 2500 then
             draw.DrawText("You have lost too much blood and have gone comatose!\nIf you are bleeding, your only hope is another person's help.", "HomigradFontSmall",
                 ScrW() / 2, ScrH() / 1.8,
                 colred, TEXT_ALIGN_CENTER)
