@@ -310,18 +310,18 @@ local function ToggleScoreboard(toggle)
 				draw.SimpleText(name1,"HomigradFont",w / 2,h / 2,white,TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 				
 				--Table for usergroup names and corresponding display names and colors
-				local userGroupDisplay = {
+			local userGroupDisplay = {
 					owner = {name = "Owner", color = Color(0,242,255)},
-					servermanager = {name = "Server Manager", color = Color(255, 25, 25)}, 
-					superadmin = {name = "Head Administrator", color = Color(255, 184, 112)},
+					servermanager = {name = "Server Manager", color = Color(255, 0, 255)}, 
+					superadmin = {name = "Superadmin", color = Color(255,223,0)},
 					admin = {name = "Administrator", color = Color(50, 255, 50)},
 					operator = {name = "Moderator", color = Color(75, 200, 75)},
 					tmod = {name = "Trial Mod", color = Color(75, 150, 70)},
 					sponsor = {name = "Sponsor", color = Color(77, 201, 255)},
-					supporterplus = {name = "Supporter+", color = Color(255,223,0)},
+					supporterplus = {name = "Supporter+", color = Color(255, 159, 62)},
 					supporter = {name = "Supporter", color = Color(241, 196, 15)},
 					regular = {name = "Regular", color = Color(0,150,220)},
-					user = {name = "User", color = Color(187, 187, 187)}
+					user = {name = "User", color = Color(125, 125, 125)}
 				}
 
 				-- Function to get the display name and color for a user group
