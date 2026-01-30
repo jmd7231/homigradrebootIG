@@ -73,29 +73,36 @@ else
         local frame = vgui.Create("DFrame")
         traitorLoadoutFrame = frame
         frame:SetTitle("")
-        frame:SetSize(420, 210)
+        frame:SetSize(720, 360)
         frame:Center()
         frame:MakePopup()
         frame:ShowCloseButton(false)
         frame:SetDraggable(false)
 
         function frame:Paint(w, h)
-            draw.RoundedBox(10, 0, 0, w, h, Color(0, 0, 0, 200))
-            draw.SimpleText("State of Emergency Options", "HomigradFontBig", w / 2, 26, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-            draw.SimpleText("Choose your traitor loadout:", "HomigradFont", w / 2, 54, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.RoundedBox(12, 0, 0, w, h, Color(10, 10, 10, 235))
+            draw.RoundedBox(12, 6, 6, w - 12, h - 12, Color(0, 0, 0, 170))
+            surface.SetDrawColor(140, 0, 0, 220)
+            surface.DrawOutlinedRect(0, 0, w, h, 4)
+            draw.SimpleText("STATE OF EMERGENCY", "HomigradRoundFont", w / 2, 48, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.SimpleText("Traitor Options", "HomigradFontBig", w / 2, 92, Color(200, 0, 0, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.SimpleText("Choose your traitor loadout:", "HomigradFont", w / 2, 132, Color(230, 230, 230, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         end
 
-        local btnWidth = 170
-        local btnHeight = 50
-        local btnY = 120
+        local btnWidth = 260
+        local btnHeight = 70
+        local btnY = 210
 
         local btnVest = vgui.Create("DButton", frame)
         btnVest:SetText("")
         btnVest:SetSize(btnWidth, btnHeight)
-        btnVest:SetPos(40, btnY)
+        btnVest:SetPos(70, btnY)
         btnVest.Paint = function(self, w, h)
-            draw.RoundedBox(8, 0, 0, w, h, self:IsHovered() and Color(120, 0, 0, 230) or Color(80, 0, 0, 220))
-            draw.SimpleText("Jihadhi Joe", "HomigradFont", w / 2, h / 2, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            local bg = self:IsHovered() and Color(160, 0, 0, 245) or Color(110, 0, 0, 235)
+            draw.RoundedBox(10, 0, 0, w, h, bg)
+            draw.RoundedBox(10, 6, 6, w - 12, h - 12, Color(0, 0, 0, 120))
+            draw.SimpleText("Jihadhi Joe", "HomigradFontBig", w / 2, h / 2 - 6, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.SimpleText("Suicide Vest", "HomigradFont", w / 2, h / 2 + 20, Color(255, 220, 220, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         end
         btnVest.DoClick = function()
             SendTraitorLoadout("jihadhi_joe")
@@ -104,10 +111,13 @@ else
         local btnBomb = vgui.Create("DButton", frame)
         btnBomb:SetText("")
         btnBomb:SetSize(btnWidth, btnHeight)
-        btnBomb:SetPos(210, btnY)
+        btnBomb:SetPos(390, btnY)
         btnBomb.Paint = function(self, w, h)
-            draw.RoundedBox(8, 0, 0, w, h, self:IsHovered() and Color(40, 40, 40, 230) or Color(25, 25, 25, 220))
-            draw.SimpleText("Prop Bomb", "HomigradFont", w / 2, h / 2, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            local bg = self:IsHovered() and Color(60, 60, 60, 245) or Color(35, 35, 35, 235)
+            draw.RoundedBox(10, 0, 0, w, h, bg)
+            draw.RoundedBox(10, 6, 6, w - 12, h - 12, Color(0, 0, 0, 120))
+            draw.SimpleText("Prop Bomb", "HomigradFontBig", w / 2, h / 2 - 6, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.SimpleText("Hide in Prop", "HomigradFont", w / 2, h / 2 + 20, Color(220, 220, 220, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         end
         btnBomb.DoClick = function()
             SendTraitorLoadout("prop_bomb")
