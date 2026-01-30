@@ -15,6 +15,10 @@ homicide.RoundRandomDefalut = 6
 -- near the top, add a shared constant:
 homicide.PREP_TIME = homicide.PREP_TIME or 5
 
+function homicide.HasTraitorHidebombRound(roundType)
+    return roundType == 1 or roundType == 2 or roundType == 3 or roundType == 4 or roundType == 5
+end
+
 
 local playsound = false
 if SERVER then
@@ -84,14 +88,13 @@ else
             draw.RoundedBox(12, 6, 6, w - 12, h - 12, Color(0, 0, 0, 170))
             surface.SetDrawColor(140, 0, 0, 220)
             surface.DrawOutlinedRect(0, 0, w, h, 4)
-            draw.SimpleText("STATE OF EMERGENCY", "HomigradRoundFont", w / 2, 48, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-            draw.SimpleText("Traitor Options", "HomigradFontBig", w / 2, 92, Color(200, 0, 0, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-            draw.SimpleText("Choose your traitor loadout:", "HomigradFont", w / 2, 132, Color(230, 230, 230, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.SimpleText("Traitor Options", "HomigradFontBig", w / 2, 72, Color(200, 0, 0, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.SimpleText("Choose your traitor loadout:", "HomigradFont", w / 2, 118, Color(230, 230, 230, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         end
 
         local btnWidth = 260
-        local btnHeight = 70
-        local btnY = 210
+        local btnHeight = 84
+        local btnY = 200
 
         local btnVest = vgui.Create("DButton", frame)
         btnVest:SetText("")
@@ -101,8 +104,9 @@ else
             local bg = self:IsHovered() and Color(160, 0, 0, 245) or Color(110, 0, 0, 235)
             draw.RoundedBox(10, 0, 0, w, h, bg)
             draw.RoundedBox(10, 6, 6, w - 12, h - 12, Color(0, 0, 0, 120))
-            draw.SimpleText("Jihadhi Joe", "HomigradFontBig", w / 2, h / 2 - 6, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-            draw.SimpleText("Suicide Vest", "HomigradFont", w / 2, h / 2 + 20, Color(255, 220, 220, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.SimpleText("Jihadhi Joe", "HomigradFontBig", w / 2, h / 2 - 18, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.SimpleText("Suicide Vest", "HomigradFont", w / 2, h / 2 + 8, Color(255, 220, 220, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.SimpleText("50% chance", "HomigradFontSmall", w / 2, h / 2 + 30, Color(255, 200, 200, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         end
         btnVest.DoClick = function()
             SendTraitorLoadout("jihadhi_joe")
@@ -128,7 +132,7 @@ else
         local lply = LocalPlayer()
         if not IsValid(lply) or not lply:Alive() then return end
         if not homicide.roleReady or not lply.roleT then return end
-        if homicide.roundType ~= 1 then return end
+        if not homicide.HasTraitorHidebombRound(homicide.roundType) then return end
         if traitorLoadoutChosen then return end
         OpenTraitorLoadoutMenu()
     end)

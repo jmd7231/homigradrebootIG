@@ -55,7 +55,6 @@ local function makeT(ply)
         local wep = ply:Give("weapon_hk_usps")
         wep:SetClip1(wep:GetMaxClip1())
         ply:Give("weapon_kabar")
-        ply:Give("weapon_hidebomb")
         ply:Give("weapon_hg_rgd5")
         ply:Give("weapon_radar")
         ply:GiveAmmo(wep:GetMaxClip1() * 3,wep:GetPrimaryAmmoType())
@@ -65,7 +64,6 @@ local function makeT(ply)
         wep:SetClip1(wep:GetMaxClip1())
         ply:Give("weapon_kabar")
         ply:Give("weapon_hg_rgd5")
-        ply:Give("weapon_hidebomb")
         ply:Give("weapon_radar")
         ply:GiveAmmo(wep:GetMaxClip1(),wep:GetPrimaryAmmoType())
     elseif homicide.roundType == 5 then
@@ -75,7 +73,6 @@ local function makeT(ply)
         wep:SetClip1(wep:GetMaxClip1())
         ply:Give("weapon_kabar")
         ply:Give("weapon_hg_rgd5")
-        ply:Give("weapon_hidebomb")
         ply:Give("weapon_radar")
         ply:GiveAmmo(wep:GetMaxClip1(),wep:GetPrimaryAmmoType())
     else
@@ -83,7 +80,6 @@ local function makeT(ply)
         ply:GiveAmmo(3*8, ".44 Remington Magnum", true) -- slots = bullets.
         wep:SetClip1(wep:GetMaxClip1())
         ply:Give("weapon_kabar")
-        ply:Give("weapon_hidebomb")
         ply:Give("weapon_hg_rgd5")
         ply:Give("weapon_radar")
         ply:GiveAmmo(wep:GetMaxClip1(),wep:GetPrimaryAmmoType())
@@ -181,13 +177,15 @@ util.AddNetworkString("homicide_traitor_loadout")
 net.Receive("homicide_traitor_loadout", function(_, ply)
     if not IsValid(ply) or not ply.roleT then return end
     if roundActiveName ~= "homicide" then return end
-    if homicide.roundType ~= 1 then return end
+    if not homicide.HasTraitorHidebombRound(homicide.roundType) then return end
     if not ply:Alive() then return end
     if ply.homicideTraitorLoadoutSelected then return end
 
     local choice = net.ReadString()
     if choice == "jihadhi_joe" then
-        ply:Give("weapon_jahidka")
+        if math.random(1, 2) == 1 then
+            ply:Give("weapon_jahidka")
+        end
     elseif choice == "prop_bomb" then
         ply:Give("weapon_hidebomb")
     else
