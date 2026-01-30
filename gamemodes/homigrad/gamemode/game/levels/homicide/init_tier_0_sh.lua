@@ -16,7 +16,7 @@ homicide.RoundRandomDefalut = 6
 homicide.PREP_TIME = homicide.PREP_TIME or 5
 
 function homicide.HasTraitorHidebombRound(roundType)
-    return roundType == 2 or roundType == 3 or roundType == 4 or roundType == 5
+    return roundType == 1 or roundType == 2 or roundType == 3 or roundType == 4 or roundType == 5
 end
 
 
