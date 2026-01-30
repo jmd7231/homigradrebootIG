@@ -48,6 +48,95 @@ else
             draw.DrawText("You will arrive as support in " .. math.ceil(timeLeft) .. " seconds", "HomigradFontBig", 10, ScrH() - 50, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
         end
     end)
+
+    local traitorLoadoutFrame
+    local traitorLoadoutChosen = false
+
+    local function CloseTraitorLoadoutMenu()
+        if IsValid(traitorLoadoutFrame) then
+            traitorLoadoutFrame:Remove()
+        end
+    end
+
+    local function SendTraitorLoadout(choice)
+        if traitorLoadoutChosen then return end
+        traitorLoadoutChosen = true
+        net.Start("homicide_traitor_loadout")
+        net.WriteString(choice)
+        net.SendToServer()
+        CloseTraitorLoadoutMenu()
+    end
+
+    local function OpenTraitorLoadoutMenu()
+        if traitorLoadoutChosen or IsValid(traitorLoadoutFrame) then return end
+
+        local frame = vgui.Create("DFrame")
+        traitorLoadoutFrame = frame
+        frame:SetTitle("")
+        frame:SetSize(720, 360)
+        frame:Center()
+        frame:MakePopup()
+        frame:ShowCloseButton(false)
+        frame:SetDraggable(false)
+
+        function frame:Paint(w, h)
+            draw.RoundedBox(12, 0, 0, w, h, Color(10, 10, 10, 235))
+            draw.RoundedBox(12, 6, 6, w - 12, h - 12, Color(0, 0, 0, 170))
+            surface.SetDrawColor(140, 0, 0, 220)
+            surface.DrawOutlinedRect(0, 0, w, h, 4)
+            draw.SimpleText("STATE OF EMERGENCY", "HomigradRoundFont", w / 2, 48, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.SimpleText("Traitor Options", "HomigradFontBig", w / 2, 92, Color(200, 0, 0, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.SimpleText("Choose your traitor loadout:", "HomigradFont", w / 2, 132, Color(230, 230, 230, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        end
+
+        local btnWidth = 260
+        local btnHeight = 70
+        local btnY = 210
+
+        local btnVest = vgui.Create("DButton", frame)
+        btnVest:SetText("")
+        btnVest:SetSize(btnWidth, btnHeight)
+        btnVest:SetPos(70, btnY)
+        btnVest.Paint = function(self, w, h)
+            local bg = self:IsHovered() and Color(160, 0, 0, 245) or Color(110, 0, 0, 235)
+            draw.RoundedBox(10, 0, 0, w, h, bg)
+            draw.RoundedBox(10, 6, 6, w - 12, h - 12, Color(0, 0, 0, 120))
+            draw.SimpleText("Jihadhi Joe", "HomigradFontBig", w / 2, h / 2 - 6, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.SimpleText("Suicide Vest", "HomigradFont", w / 2, h / 2 + 20, Color(255, 220, 220, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        end
+        btnVest.DoClick = function()
+            SendTraitorLoadout("jihadhi_joe")
+        end
+
+        local btnBomb = vgui.Create("DButton", frame)
+        btnBomb:SetText("")
+        btnBomb:SetSize(btnWidth, btnHeight)
+        btnBomb:SetPos(390, btnY)
+        btnBomb.Paint = function(self, w, h)
+            local bg = self:IsHovered() and Color(60, 60, 60, 245) or Color(35, 35, 35, 235)
+            draw.RoundedBox(10, 0, 0, w, h, bg)
+            draw.RoundedBox(10, 6, 6, w - 12, h - 12, Color(0, 0, 0, 120))
+            draw.SimpleText("Prop Bomb", "HomigradFontBig", w / 2, h / 2 - 6, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.SimpleText("Hide in Prop", "HomigradFont", w / 2, h / 2 + 20, Color(220, 220, 220, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        end
+        btnBomb.DoClick = function()
+            SendTraitorLoadout("prop_bomb")
+        end
+    end
+
+    hook.Add("HUDPaint", "Homicide_TraitorLoadoutMenu", function()
+        local lply = LocalPlayer()
+        if not IsValid(lply) or not lply:Alive() then return end
+        if not homicide.roleReady or not lply.roleT then return end
+        if homicide.roundType ~= 1 then return end
+        if traitorLoadoutChosen then return end
+        OpenTraitorLoadoutMenu()
+    end)
+
+    hook.Add("Homicide_ResetTraitorLoadout", "Homicide_ResetTraitorLoadout", function()
+        traitorLoadoutChosen = false
+        CloseTraitorLoadoutMenu()
+    end)
 end
 
 local homicide_setmode = CreateConVar("homicide_setmode","",FCVAR_LUA_SERVER,"")
@@ -80,6 +169,7 @@ function homicide.StartRound(data)
             ply.roleCT = false
             ply.countKick = 0
         end
+        hook.Run("Homicide_ResetTraitorLoadout")
         homicide.roleReady = false
         roundTimeLoot = data.roundTimeLoot
         return
