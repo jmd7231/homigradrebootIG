@@ -15,6 +15,10 @@ homicide.RoundRandomDefalut = 6
 -- near the top, add a shared constant:
 homicide.PREP_TIME = homicide.PREP_TIME or 5
 
+function homicide.HasTraitorHidebombRound(roundType)
+    return roundType == 2 or roundType == 3 or roundType == 4 or roundType == 5
+end
+
 
 local playsound = false
 if SERVER then
@@ -128,7 +132,7 @@ else
         local lply = LocalPlayer()
         if not IsValid(lply) or not lply:Alive() then return end
         if not homicide.roleReady or not lply.roleT then return end
-        if homicide.roundType ~= 1 then return end
+        if not homicide.HasTraitorHidebombRound(homicide.roundType) then return end
         if traitorLoadoutChosen then return end
         OpenTraitorLoadoutMenu()
     end)
