@@ -88,9 +88,8 @@ else
             draw.RoundedBox(12, 6, 6, w - 12, h - 12, Color(0, 0, 0, 170))
             surface.SetDrawColor(140, 0, 0, 220)
             surface.DrawOutlinedRect(0, 0, w, h, 4)
-            draw.SimpleText("STATE OF EMERGENCY", "HomigradRoundFont", w / 2, 48, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-            draw.SimpleText("Traitor Options", "HomigradFontBig", w / 2, 92, Color(200, 0, 0, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-            draw.SimpleText("Choose your traitor loadout:", "HomigradFont", w / 2, 132, Color(230, 230, 230, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.SimpleText("Traitor Options", "HomigradFontBig", w / 2, 72, Color(200, 0, 0, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.SimpleText("Choose your traitor loadout:", "HomigradFont", w / 2, 118, Color(230, 230, 230, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         end
 
         local btnWidth = 260
