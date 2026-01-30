@@ -183,7 +183,9 @@ net.Receive("homicide_traitor_loadout", function(_, ply)
 
     local choice = net.ReadString()
     if choice == "jihadhi_joe" then
-        ply:Give("weapon_jahidka")
+        if math.random(1, 2) == 1 then
+            ply:Give("weapon_jahidka")
+        end
     elseif choice == "prop_bomb" then
         ply:Give("weapon_hidebomb")
     else

@@ -104,8 +104,9 @@ else
             local bg = self:IsHovered() and Color(160, 0, 0, 245) or Color(110, 0, 0, 235)
             draw.RoundedBox(10, 0, 0, w, h, bg)
             draw.RoundedBox(10, 6, 6, w - 12, h - 12, Color(0, 0, 0, 120))
-            draw.SimpleText("Jihadhi Joe", "HomigradFontBig", w / 2, h / 2 - 6, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-            draw.SimpleText("Suicide Vest", "HomigradFont", w / 2, h / 2 + 20, Color(255, 220, 220, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.SimpleText("Jihadhi Joe", "HomigradFontBig", w / 2, h / 2 - 14, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.SimpleText("Suicide Vest", "HomigradFont", w / 2, h / 2 + 10, Color(255, 220, 220, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.SimpleText("50% chance", "HomigradFontSmall", w / 2, h / 2 + 32, Color(255, 200, 200, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         end
         btnVest.DoClick = function()
             SendTraitorLoadout("jihadhi_joe")
