@@ -43,7 +43,15 @@ local function makeT(ply)
     ply.roleT = true --Игрока не существует. Выдаёт из-за этого ошибку в первый раз.
     table.insert(homicide.t,ply)
 
-    if homicide.roundType == 1 or homicide.roundType == 2 then
+    ply.homicideTraitorLoadoutSelected = false
+    if homicide.roundType == 1 then
+        local wep = ply:Give("weapon_hk_usps")
+        wep:SetClip1(wep:GetMaxClip1())
+        ply:Give("weapon_kabar")
+        ply:Give("weapon_hg_rgd5")
+        ply:Give("weapon_radar")
+        ply:GiveAmmo(wep:GetMaxClip1() * 3,wep:GetPrimaryAmmoType())
+    elseif homicide.roundType == 2 then
         local wep = ply:Give("weapon_hk_usps")
         wep:SetClip1(wep:GetMaxClip1())
         ply:Give("weapon_kabar")
@@ -168,6 +176,26 @@ local prePolicePlayers = {}
 
 util.AddNetworkString("homicide_support_arrival")
 util.AddNetworkString("homicide_self_role")
+util.AddNetworkString("homicide_traitor_loadout")
+
+net.Receive("homicide_traitor_loadout", function(_, ply)
+    if not IsValid(ply) or not ply.roleT then return end
+    if roundActiveName ~= "homicide" then return end
+    if homicide.roundType ~= 1 then return end
+    if not ply:Alive() then return end
+    if ply.homicideTraitorLoadoutSelected then return end
+
+    local choice = net.ReadString()
+    if choice == "jihadhi_joe" then
+        ply:Give("weapon_jahidka")
+    elseif choice == "prop_bomb" then
+        ply:Give("weapon_hidebomb")
+    else
+        return
+    end
+
+    ply.homicideTraitorLoadoutSelected = true
+end)
 
 function NotifySupportArrival(ply, arrivalTime)
     net.Start("homicide_support_arrival")
