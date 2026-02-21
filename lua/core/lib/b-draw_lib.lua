@@ -19,8 +19,19 @@ local _error = Material("error")
 local mats = {}
 local fetchedavatars = {}
 
+local function normalize_url(url)
+	if not url then return url end
+
+	if string.StartWith(url, "//") then
+		return "https:" .. url
+	end
+
+	return string.Replace(url, "http://", "https://")
+end
+
 local function fetch_asset(url)
 	if not url then return _error end
+	url = normalize_url(url)
 
 	if mats[url] then
 		return mats[url]
@@ -52,13 +63,13 @@ local function fetchAvatarAsset( id64, size )
 		return fetchedavatars[ id64 .. " " .. size ]
 	end
 
-	fetchedavatars[ id64 .. " " .. size ] = id64 == "BOT" and "http://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/09/09962d76e5bd5b91a94ee76b07518ac6e240057a_full.jpg" or "http://i.imgur.com/uaYpdq7.png"
+	fetchedavatars[ id64 .. " " .. size ] = id64 == "BOT" and "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/09/09962d76e5bd5b91a94ee76b07518ac6e240057a_full.jpg" or "https://i.imgur.com/uaYpdq7.png"
 	if id64 == "BOT" then return end
-	fetch("http://steamcommunity.com/profiles/" .. id64 .. "/?xml=1",function( body )
-		local link = body:match("http://cdn.akamai.steamstatic.com/steamcommunity/public/images/avatars/.-jpg")
+	fetch("https://steamcommunity.com/profiles/" .. id64 .. "/?xml=1",function( body )
+		local link = body:match("https?://cdn%.akamai%.steamstatic%.com/steamcommunity/public/images/avatars/.-jpg")
 		if not link then return end
 
-		fetchedavatars[ id64 .. " " .. size ] = link:Replace( ".jpg", ( size ~= "" and "_" .. size or "") .. ".jpg")
+		fetchedavatars[ id64 .. " " .. size ] = normalize_url(link:Replace( ".jpg", ( size ~= "" and "_" .. size or "") .. ".jpg"))
 	end)
 end
 
